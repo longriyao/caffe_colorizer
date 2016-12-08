@@ -1,0 +1,98 @@
+name: "GAN"
+layer {
+    name: 'input_data'
+    type: 'Python'
+    top: 'gray_image'
+    top: 'color_image'
+    python_param {
+        module: 'data_layer'
+        layer: 'DataLayer'
+        param_str: " 'batch_size': 32 "
+    }
+}
+
+layer {
+    name: "g_fc_1"
+    type: "InnerProduct"
+}
+
+layer {
+    name: "g_relu_1"
+    type: "ReLU"
+}
+
+layer {
+    name: "g_fc_2"
+    type: "InnerProduct"
+}
+
+layer {
+    name: "g_sigmoid_1"
+    type: "Sigmoid"
+}
+
+layer {
+    name: "g_deconv_1"
+    type: "Deconvolution"   #搞明白 在哪里实现的
+}
+
+layer {
+    name: "d_conv_1"
+    type: "Convolution"
+}
+
+layer {
+    name: "d_maxout_1"
+    type: "Eltwise"
+    EltwiseOp: MAX
+
+}
+
+layer {
+    name: "d_conv_2"
+    type: "Convolution"
+}
+
+layer {
+    name: "d_maxout_2"
+    type: "Eltwise"
+    EltwiseOp: MAX
+}
+
+layer {
+    name: "d_conv_3"
+    type: "Convolution"
+}
+
+layer {
+    name: "d_maxout_3"
+    type: "Eltwise"
+    EltwiseOp: MAX
+}
+
+layer {
+    name: "d_fc_1"
+    type: "InnerProduct"
+}
+
+layer {
+    name: "d_maxout_4"
+    type: "Eltwise"
+    EltwiseOp: MAX
+}
+
+layer {
+    name: "d_fc_2"
+    type: "InnerProduct"
+}
+
+layer {
+    name: "d_sigmoid_1"
+    type: "Sigmoid"
+}
+
+layer {
+    name: "GANLoss"
+    type: "GANLoss"
+    batch_size: 32  #same as input_data.batchsize
+}
