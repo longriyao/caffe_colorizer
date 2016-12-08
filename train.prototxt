@@ -7,92 +7,134 @@ layer {
     python_param {
         module: 'data_layer'
         layer: 'DataLayer'
-        param_str: " 'batch_size': 32 "
+        param_str: " 'batch_size': 32 " and roor_folder folder and train.txt source height weight
     }
 }
 
 layer {
     name: "g_fc_1"
     type: "InnerProduct"
+    bottom: "gray_image"
+    top: "g_fc_1"
 }
 
 layer {
     name: "g_relu_1"
     type: "ReLU"
+    bottom: "g_fc_1"
+    top: "g_relu_1"
 }
 
 layer {
     name: "g_fc_2"
     type: "InnerProduct"
+    bottom: "g_relu_1"
+    top: "g_fc_2"
 }
 
 layer {
     name: "g_sigmoid_1"
     type: "Sigmoid"
+    bottom: "g_fc_2"
+    top: "g_sigmoid_1"
 }
 
 layer {
     name: "g_deconv_1"
     type: "Deconvolution"   #搞明白 在哪里实现的
+    bottom: "g_sigmoid_1"
+    top: "g_deconv_1"
 }
 
+# concat the g_deconv and color_image
 layer {
     name: "d_conv_1"
     type: "Convolution"
+
+    top: "d_conv_1"
 }
 
 layer {
     name: "d_maxout_1"
     type: "Eltwise"
-    EltwiseOp: MAX
-
+    bottom: "d_conv_1"
+    top: "d_maxout_1"
+    eltwise_param {
+        EltwiseOp: MAX
+    }
 }
 
 layer {
     name: "d_conv_2"
     type: "Convolution"
+    bottom: "d_maxout_1"
+    top: "d_conv_2"
 }
 
 layer {
     name: "d_maxout_2"
     type: "Eltwise"
-    EltwiseOp: MAX
+    bottom: "d_conv_2"
+    top: "d_maxout_2"
+    eltwise_param{
+        EltwiseOp: MAX
+    }
 }
 
 layer {
     name: "d_conv_3"
     type: "Convolution"
+    bottom: "d_maxout_2"
+    top: "d_conv_3"
 }
 
 layer {
     name: "d_maxout_3"
     type: "Eltwise"
-    EltwiseOp: MAX
+    eltwise_param{
+        EltwiseOp: MAX
+    }
+    bottom: "d_conv_3"
+    top: "d_maxout_3"
 }
 
 layer {
     name: "d_fc_1"
     type: "InnerProduct"
+    bottom: "d_maxout_3"
+    top: "d_fc_1"
 }
 
 layer {
     name: "d_maxout_4"
     type: "Eltwise"
-    EltwiseOp: MAX
+    bottom: "d_fc_1"
+    top: "d_maxout_4"
+    eltwise_param{
+        EltwiseOp: MAX
+    }
 }
 
 layer {
     name: "d_fc_2"
     type: "InnerProduct"
+    bottom: "d_maxout_4"
+    top: "d_fc_2"
 }
 
 layer {
     name: "d_sigmoid_1"
     type: "Sigmoid"
+    bottom: "d_fc_2"
+    top: "d_sigmoid_1"
 }
 
 layer {
     name: "GANLoss"
     type: "GANLoss"
-    batch_size: 32  #same as input_data.batchsize
+    bottom: "d_sigmoid_1"
+    top: "GANLoss"
+    ganloss_param{
+        batch_size: 32  #same as input_data.batchsize
+    }
 }
