@@ -4,10 +4,11 @@ layer {
     type: 'Python'
     top: 'gray_image'
     top: 'color_image'
+    top: 'label'
     python_param {
         module: 'data_layer'
         layer: 'DataLayer'
-        param_str: " 'batch_size': 32 " and roor_folder folder and train.txt source height weight
+        param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
     }
 }
 
@@ -41,16 +42,25 @@ layer {
 
 layer {
     name: "g_deconv_1"
-    type: "Deconvolution"   #搞明白 在哪里实现的
+    type: "Deconvolution"
     bottom: "g_sigmoid_1"
     top: "g_deconv_1"
 }
 
 # concat the g_deconv and color_image
+
+layer {
+    name: "concat"
+    type: "Concat"
+    bottom: "g_deconv_1"
+    bottom: "color_image"
+    top: "concat"
+}
+
 layer {
     name: "d_conv_1"
     type: "Convolution"
-
+    bottom: "concat"
     top: "d_conv_1"
 }
 
