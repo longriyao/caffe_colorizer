@@ -52,8 +52,8 @@ layer {
 layer {
     name: "concat"
     type: "Concat"
-    bottom: "g_deconv_1"
     bottom: "color_image"
+    bottom: "g_deconv_1"
     top: "concat"
 }
 

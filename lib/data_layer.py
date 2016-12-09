@@ -1,15 +1,14 @@
 # written by longriyao
-
+#coding: utf-8
 """
     The data_layer is provide data to the net
 """
 import caffe
-import cv2
 import yaml
 import os
 import numpy as np
+import cv2
 import random
-from batch import get_batch
 class DataLayer(caffe.Layer):
 
     _current = 0
@@ -25,12 +24,44 @@ class DataLayer(caffe.Layer):
             batch = self._image_paths[self._current:(self._current + self._batch_size)]
             self._current += self._batch_size
         return batch
-    
+
+    def _get_batch(self,batch_paths):
+        blobs = {}
+        # store blob
+        gray_image = np.zeros((self._batch_size,1,self._height,self._weight),dtype=np.float32)
+        color_image = np.zeros((self._batch_size,3,self._height,self._weight),dtype=np.float32)
+
+        for i in xrange(self._batch_size):
+            im = cv2.imread(batch_paths[i],cv2.IMREAD_COLOR)
+            im = im.astype(np.float32, copy=False)
+            # resize image according to height and weight
+            if (self._height != im.shape[0] or self._weight != im.shape[1]):
+                im = cv2.resize(im,(self._height,self._weight),interpolation = cv2.INTER_CUBIC)
+            color_image[i,0:im.shape[0], 0:im.shape[1], :] = im
+            im = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
+            gray_image[i,0:im.shape[0], 0:im.shape[1], :] = im
+        # change the dims like caffe
+        channel_swap = (0, 3, 1, 2)
+        color_image = color_image.transpose(channel_swap)
+        gray_image = gray_image.transpose(channel_swap)
+
+        # generate noise
+        noise = np.random.uniform(0.0,1.0, gray_image.shape)
+        gray_image = gray_image + noise
+
+        blobs['gray_image'] = gray_image
+        blobs['color_image'] = color_image
+        if self._has_label:
+            label = np.zeros(len(batch_paths) * 2, dtype=np.float32)
+            label[(len(batch_paths) - 1):] = 1
+            blobs['label'] = label
+        return blobs
+
     def _get_next_batch(self):
 
         next_batch_paths = self._get_next_batch_paths()
         #batch_data_path = [self._image_paths[i] for i in indexs]
-        return get_batch(next_batch_paths)
+        return self._get_batch(next_batch_paths)
     
     def _get_param(self):
         # parse 
@@ -83,6 +114,8 @@ class DataLayer(caffe.Layer):
         self._blob_name_to_index = {}
         # get param 
         self._get_param()
+        #judce has label
+        self._has_label = len(top) == 3
         # get data path from param 
         self._get_data_path()
         # reshape top 
@@ -91,7 +124,7 @@ class DataLayer(caffe.Layer):
 
         top[1].reshape(self._batch_size_, 3, self._height, self._weight)
         self._blob_name_to_index["color_image"] = 1
-        if len(top) == 3:
+        if self._has_label:
             self._blob_name_to_index["label"] = 2
             top[2].reshape(self._batch_size_,1)
 
