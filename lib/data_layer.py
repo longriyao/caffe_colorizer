@@ -34,6 +34,7 @@ class DataLayer(caffe.Layer):
         for i in xrange(self._batch_size):
             im = cv2.imread(batch_paths[i],cv2.IMREAD_COLOR)
             im = im.astype(np.float32, copy=False)
+            #im = np.array(im,dtype=np.float32,copy=False)
             # resize image according to height and weight
             if (self._height != im.shape[0] or self._weight != im.shape[1]):
                 im = cv2.resize(im,(self._height,self._weight),interpolation = cv2.INTER_CUBIC)
@@ -55,7 +56,7 @@ class DataLayer(caffe.Layer):
         blobs['gray_image'] = gray_image
         blobs['color_image'] = color_image
         if self._has_label:
-            label = np.zeros(len(batch_paths) * 2, dtype=np.float32)
+            label = np.zeros((len(batch_paths) * 2,1), dtype=np.float32)
             label[(len(batch_paths) - 1):] = 1
             blobs['label'] = label
         return blobs
@@ -68,7 +69,7 @@ class DataLayer(caffe.Layer):
     
     def _get_param(self):
         # parse 
-        layer_params = yaml.load(self.param_str_)
+        layer_params = yaml.load(self.param_str)
         # get the param
         if layer_params.has_key('batch_size'):
             self._batch_size = layer_params['batch_size']
@@ -108,7 +109,7 @@ class DataLayer(caffe.Layer):
         # add folder 
         if self._root_folder:
             for i in xrange(len(self._image_paths)):
-                self._image_paths[i] = os.path.join(self._root_folder,self._image_paths[i])
+                self._image_paths[i] = os.path.join(self._root_folder,self._image_paths[i].strip('\n'))
                 
     def setup(self,bottom,top):
         # setup function
@@ -122,14 +123,14 @@ class DataLayer(caffe.Layer):
         # get data path from param 
         self._get_data_path()
         # reshape top 
-        top[0].reshape(self._batch_size, 1, self._height, self._weight)
+        top[0].reshape(self._batch_size, 2, self._height, self._weight)
         self._blob_name_to_index["gray_image"] = 0
 
-        top[1].reshape(self._batch_size_, 3, self._height, self._weight)
+        top[1].reshape(self._batch_size, 3, self._height, self._weight)
         self._blob_name_to_index["color_image"] = 1
         if self._has_label:
             self._blob_name_to_index["label"] = 2
-            top[2].reshape(self._batch_size_,1)
+            top[2].reshape(self._batch_size*2,1)
 
     def forward(self,bottom,top):
 
