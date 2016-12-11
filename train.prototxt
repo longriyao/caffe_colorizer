@@ -8,7 +8,8 @@ layer {
     python_param {
         module: 'data_layer'
         layer: 'DataLayer'
-        param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
+        #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
+        param_str: "{\'batch_size\': 32 , \'roor_folder\': \'roor_folder\', \'source\': \'train\'}"
     }
 }
 
