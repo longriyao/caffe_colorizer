@@ -58,7 +58,6 @@ layer {
     top: "g_relu_1"
 }
 
-
 layer {
     name: "g_conv_2"
     type: "Convolution"
@@ -112,8 +111,8 @@ layer {
     top: "g_pooling_2"
     pooling_param{
         pool: MAX
-        kernel_size:2
-        stride:1
+        kernel_size: 2
+        stride: 2
     }
 }
 layer {
@@ -170,7 +169,7 @@ layer {
     pooling_param{
         pool: MAX
         kernel_size:2
-        stride:1
+        stride: 2
     }
 }
 
@@ -265,11 +264,28 @@ layer {
     bottom: "g_scale_5"
     top: "g_relu_5"
 }
-#upsample 2
+#upsample
+layer {
+  name: "g_deconv_1"
+  type: "Deconvolution"
+  bottom: "g_relu_5"
+  top: "g_deconv_1"
+  param {
+    lr_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    bias_term: false
+    kernel_size: 3
+    stride: 1
+    pad:1
+  }
+}
+
 layer {
     name: "g_conv_6"
     type: "Convolution"
-    bottom: ""
+    bottom: "g_deconv_1"
     top: "g_conv_6"
     param {
         lr_mult: 1
@@ -313,9 +329,26 @@ layer {
 }
 #upsampling
 layer {
+  name: "g_deconv_2"
+  type: "Deconvolution"
+  bottom: "g_relu_6"
+  top: "g_deconv_2"
+  param {
+    lr_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    bias_term: false
+    kernel_size: 3
+    stride: 1
+    pad:1
+  }
+}
+
+layer {
     name: "g_conv_7"
     type: "Convolution"
-    bottom: ""
+    bottom: "g_deconv_2"
     top: "g_conv_7"
     param {
         lr_mult: 1
@@ -365,14 +398,14 @@ layer {
     bottom: "g_relu_7"
     top: "concat"
     concat_param{
-        axis = 1
+        axis : 1
     }
 }
 
 layer {
     name: "g_conv_8"
     type: "Convolution"
-    bottom: ""
+    bottom: "concat"
     top: "g_conv_8"
     param {
         lr_mult: 1
@@ -466,8 +499,8 @@ layer {
     name: "concat_2"
     type: "Concat"
     bottom: "color_image"
-    bottom: "g_deconv_1"
-    top: "concat"
+    bottom: "g_sigmoid_9"
+    top: "concat_2"
     concat_param{
         axis:0
     }
@@ -523,7 +556,7 @@ layer {
 layer {
     name: "d_conv_2"
     type: "Convolution"
-    bottom: "d_conv_1"
+    bottom: "d_pooling_1"
     top: "d_conv_2"
     param {
         lr_mult: 1
@@ -559,7 +592,7 @@ layer {
 layer {
     name: "d_conv_3"
     type: "Convolution"
-    bottom: "d_conv_2"
+    bottom: "d_dropout_2"
     top: "d_conv_3"
     param {
         lr_mult: 1
@@ -653,19 +686,25 @@ layer {
     }
 
 }
-
 layer {
-    name: "d_sigmoid_5"
-    type: "Sigmoid"
+    name: "sigmoid_loss"
+    type: "SigmoidCrossEntropyLoss"
     bottom: "d_fc_5"
-    top: "d_sigmoid_5"
+    bottom: "label"
+    top: "sigmoid_loss"
 }
-layer {
-    name: "GANLoss"
-    type: "GANLoss"
-    bottom: "d_sigmoid_5"
-    top: "GANLoss"
-    ganloss_param{
-        batch_size: 32  #same as input_data.batchsize
-    }
-}
+#layer {
+    #name: "d_sigmoid_5"
+    #type: "Sigmoid"
+    #bottom: "d_fc_5"
+    #top: "d_sigmoid_5"
+#}
+#layer {
+    #name: "GANLoss"
+    #type: "GANLoss"
+    #bottom: "d_sigmoid_5"
+    #top: "GANLoss"
+    #ganloss_param{
+        #batch_size: 32  #same as input_data.batchsize
+    #}
+#}

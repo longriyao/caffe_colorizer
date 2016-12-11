@@ -28,8 +28,8 @@ class DataLayer(caffe.Layer):
     def _get_batch(self,batch_paths):
         blobs = {}
         # store blob
-        gray_image = np.zeros((self._batch_size,1,self._height,self._weight),dtype=np.float32)
-        color_image = np.zeros((self._batch_size,3,self._height,self._weight),dtype=np.float32)
+        gray_image = np.zeros((self._batch_size,self._height,self._weight,2),dtype=np.float32)
+        color_image = np.zeros((self._batch_size,self._height,self._weight,3),dtype=np.float32)
 
         for i in xrange(self._batch_size):
             im = cv2.imread(batch_paths[i],cv2.IMREAD_COLOR)
@@ -39,15 +39,18 @@ class DataLayer(caffe.Layer):
                 im = cv2.resize(im,(self._height,self._weight),interpolation = cv2.INTER_CUBIC)
             color_image[i,0:im.shape[0], 0:im.shape[1], :] = im
             im = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
-            gray_image[i,0:im.shape[0], 0:im.shape[1], :] = im
+            gray_image[i,0:im.shape[0], 0:im.shape[1], 0] = im
+            #generate noise
+            noise = np.random.uniform(0.0, 1.0, im.shape)
+            gray_image[i, 0:im.shape[0], 0:im.shape[1], 1] = noise
         # change the dims like caffe
         channel_swap = (0, 3, 1, 2)
         color_image = color_image.transpose(channel_swap)
         gray_image = gray_image.transpose(channel_swap)
 
         # generate noise
-        noise = np.random.uniform(0.0,1.0, gray_image.shape)
-        gray_image = gray_image + noise
+        #noise = np.random.uniform(0.0,1.0, gray_image.shape)
+        #gray_image = gray_image + noise
 
         blobs['gray_image'] = gray_image
         blobs['color_image'] = color_image
