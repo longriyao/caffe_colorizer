@@ -110,11 +110,10 @@ layer {
     type: "Pooling"
     bottom: "g_relu_2"
     top: "g_pooling_2"
-    top: "g_pooling_2_mask"
     pooling_param{
         pool: MAX
-        kernel_size: 2
-        stride: 2
+        kernel_size: 1
+        stride: 1
     }
 }
 layer {
@@ -168,11 +167,10 @@ layer {
     type: "Pooling"
     bottom: "g_relu_3"
     top: "g_pooling_3"
-    top: "g_pooling_3_mask"
     pooling_param{
         pool: MAX
-        kernel_size:2
-        stride: 2
+        kernel_size:1
+        stride: 1
     }
 }
 
@@ -234,7 +232,7 @@ layer {
         lr_mult: 2
     }
     convolution_param{
-        num_output: 64
+        num_output: 256
         pad: 1
         stride: 1
         kernel_size: 3
@@ -268,41 +266,27 @@ layer {
     top: "g_relu_5"
 }
 #upsample
-
 layer {
-  name: "g_upsample_1"
-  type: "Upsample"
+  name: "g_deconv_1"
+  type: "Deconvolution"
   bottom: "g_relu_5"
-  bottom: "g_pooling_3_mask"
-  top: "g_upsample_1"
-  upsample_param {
-    scale: 2
-    #upsample_w: 30
-    #upsample_h: 23
+  top: "g_deconv_1"
+  param {
+    lr_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    bias_term: false
+    kernel_size: 3
+    stride: 1
+    pad:1
   }
 }
-
-#layer {
-  #name: "g_deconv_1"
-  #type: "Deconvolution"
-  #bottom: "g_relu_5"
-  #top: "g_deconv_1"
-  #param {
-    #lr_mult: 0
-  #}
-  #convolution_param {
-    #num_output: 256
-    #bias_term: false
-    #kernel_size: 3
-    #stride: 1
-    #pad:1
-  #}
-#}
 
 layer {
     name: "g_conv_6"
     type: "Convolution"
-    bottom: "g_upsample_1"
+    bottom: "g_deconv_1"
     top: "g_conv_6"
     param {
         lr_mult: 1
@@ -311,7 +295,7 @@ layer {
         lr_mult: 2
     }
     convolution_param{
-        num_output: 32
+        num_output: 128
         pad: 1
         stride: 1
         kernel_size: 3
@@ -346,39 +330,26 @@ layer {
 }
 #upsampling
 layer {
-  name: "g_upsample_2"
-  type: "Upsample"
+  name: "g_deconv_2"
+  type: "Deconvolution"
   bottom: "g_relu_6"
-  bottom: "g_pooling_2_mask"
-  top: "g_upsample_2"
-  upsample_param {
-    scale: 2
-    #upsample_w: 30
-    #upsample_h: 23
+  top: "g_deconv_2"
+  param {
+    lr_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    bias_term: false
+    kernel_size: 3
+    stride: 1
+    pad:1
   }
 }
-
-#layer {
-  #name: "g_deconv_2"
-  #type: "Deconvolution"
-  #bottom: "g_relu_6"
-  #top: "g_deconv_2"
-  #param {
-    #lr_mult: 0
-  #}
-  #convolution_param {
-    #num_output: 128
-    #bias_term: false
-    #kernel_size: 3
-    #stride: 1
-    #pad:1
-  #}
-#}
 
 layer {
     name: "g_conv_7"
     type: "Convolution"
-    bottom: "g_upsample_2"
+    bottom: "g_deconv_2"
     top: "g_conv_7"
     param {
         lr_mult: 1
@@ -723,18 +694,249 @@ layer {
     bottom: "label"
     top: "sigmoid_loss"
 }
-#layer {
-    #name: "d_sigmoid_5"
-    #type: "Sigmoid"
-    #bottom: "d_fc_5"
-    #top: "d_sigmoid_5"
-#}
-#layer {
-    #name: "GANLoss"
-    #type: "GANLoss"
-    #bottom: "d_sigmoid_5"
-    #top: "GANLoss"
-    #ganloss_param{
-        #batch_size: 32  #same as input_data.batchsize
-    #}
-#}
+
+
+
+layer {
+    name: "d_conv_1_s"
+    type: "Convolution"
+    bottom: "g_sigmoid_9"
+    top: "d_conv_1_s"
+    param {
+        name: "d_conv_1"
+        lr_mult: 1
+    }
+    param {
+        name: "d_conv_1"        
+        lr_mult: 2
+    }
+    convolution_param{
+        num_output: 64
+        pad: 1
+        stride: 1
+        kernel_size: 3
+    }
+    propagate_down: false
+}
+
+
+layer {
+    name: "d_relu_1_s"
+    type: "ReLU"
+    bottom: "d_conv_1_s"
+    top: "d_relu_1_s"
+    propagate_down: false
+}
+layer {
+    name: "d_dropout_1_s"
+    type: "Dropout"
+    bottom: "d_relu_1_s"
+    top: "d_dropout_1_s"
+    param {
+        name:"d_dropout_1"
+    }
+    dropout_param{
+        dropout_ratio: 0.25
+    }
+    propagate_down: false
+}
+layer {
+    name: "d_pooling_1_s"
+    type: "Pooling"
+    bottom: "d_dropout_1_s"
+    top: "d_pooling_1_s"
+    param {
+        name:"d_dropout_1"
+    }
+    pooling_param{
+        pool: AVE
+        kernel_size: 2
+        stride: 2
+    }
+    propagate_down: false
+}
+
+layer {
+    name: "d_conv_2_s"
+    type: "Convolution"
+    bottom: "d_pooling_1_s"
+    top: "d_conv_2_s"
+    param {
+        lr_mult: 1
+        name: "d_conv_2"
+    }
+    param {
+        name: "d_conv_2"
+        lr_mult: 2
+    }
+    convolution_param{
+        num_output: 128
+        pad: 1
+        stride: 1
+        kernel_size: 3
+    }
+    propagate_down: false
+}
+
+
+layer {
+    name: "d_relu_2_s"
+    type: "ReLU"
+    bottom: "d_conv_2_s"
+    top: "d_relu_2_s"
+    propagate_down: false
+}
+layer {
+    name: "d_dropout_2_s"
+    type: "Dropout"
+    bottom: "d_relu_2_s"
+    top: "d_dropout_2_s"
+    param {
+        name:"d_dropout_2"
+    }
+    dropout_param{
+        dropout_ratio: 0.25
+    }
+    propagate_down: false
+}
+
+layer {
+    name: "d_conv_3_s"
+    type: "Convolution"
+    bottom: "d_dropout_2_s"
+    top: "d_conv_3_s"
+    param {
+        lr_mult: 1
+        name:"d_conv_3" 
+    }
+    param {
+        lr_mult: 2
+        name:"d_conv_3" 
+    }
+    convolution_param{
+        num_output: 256
+        pad: 1
+        stride: 1
+        kernel_size: 3
+    }
+    propagate_down: false
+}
+
+
+layer {
+    name: "d_relu_3_s"
+    type: "ReLU"
+    bottom: "d_conv_3_s"
+    top: "d_relu_3_s"
+    propagate_down: false
+}
+layer {
+    name: "d_dropout_3_s"
+    type: "Dropout"
+    bottom: "d_relu_3_s"
+    top: "d_dropout_3_s"
+    param {
+        name:"d_dropout_3" 
+    } 
+    dropout_param{
+        dropout_ratio: 0.25
+    }
+    propagate_down: false
+}
+layer {
+    name: "d_pooling_3_s"
+    type: "Pooling"
+    bottom: "d_dropout_3_s"
+    top: "d_pooling_3_s"
+    pooling_param{
+        pool: MAX
+        kernel_size: 2
+        stride: 2
+    }
+    propagate_down: false
+}
+
+
+layer {
+    name: "d_fc_4_s"
+    type: "InnerProduct"
+    bottom: "d_pooling_3_s"
+    top: "d_fc_4_s"
+    param {
+        lr_mult: 1
+        name: "d_fc_4"
+    }
+    param {
+        name:"d_fc_4"
+        lr_mult: 2
+    }
+    inner_product_param {
+        num_output: 128
+    }
+
+    propagate_down: false
+}
+layer {
+    name: "d_prelu_4_s"
+    type: "PReLU"
+    bottom: "d_fc_4_s"
+    top: "d_prelu_4_s"
+    propagate_down: false
+}
+
+layer {
+    name: "d_dropout_4_s"
+    type: "Dropout"
+    bottom: "d_prelu_4_s"
+    top: "d_dropout_4_s"
+    param {
+        name:"d_dropout_4"
+    }
+    dropout_param{
+        dropout_ratio: 0.5
+    }
+    propagate_down: false
+}
+
+layer {
+    name: "d_fc_5_s"
+    type: "InnerProduct"
+    bottom: "d_dropout_4_s"
+    top: "d_fc_5_s"
+    param {
+        lr_mult: 1
+        name:"d_fc_5"
+
+    }
+    param {
+        lr_mult: 2
+        name:"d_fc_5"
+
+    }
+    inner_product_param {
+        num_output: 1
+    }
+
+    propagate_down: false
+}
+
+
+layer {
+    name: "d_sigmoid_5"
+    type: "Sigmoid"
+    bottom: "d_fc_5_s"
+    top: "d_sigmoid_5"
+    propagate_down: false
+}
+layer {
+    name: "GANLoss"
+    type: "GANLoss"
+    bottom: "d_sigmoid_5"
+    bottom: "label_g"
+    top: "GANLoss"
+    propagate_down: false
+    propagate_down: true
+    ganloss_param{
+        batch_size: 32  #same as input_data.batchsize
+    }
+}
