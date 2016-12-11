@@ -20,4 +20,4 @@ max_iter: 10000
 snapshot: 5000000
 snapshot_prefix: "gan"
 # solver mode: CPU or GPU
-solver_mode: GPU                                                                                                                                                    
+solver_mode: GPU             
