@@ -56,9 +56,13 @@ class DataLayer(caffe.Layer):
         blobs['gray_image'] = gray_image
         blobs['color_image'] = color_image
         if self._has_label:
-            label = np.zeros((len(batch_paths) * 2,1), dtype=np.float32)
-            label[(len(batch_paths) - 1):] = 1
+            label = np.zeros((len(batch_paths) * 2,1), dtype=np.int)
+            label[:(len(batch_paths) - 1)] = 1
             blobs['label'] = label
+        if self._has_label_g:
+            label_g = np.zeros((len(batch_paths) * 2,1), dtype=np.int)
+            label_g[(len(batch_paths) - 1):] = 1
+            blobs['label_g'] = label_g
         return blobs
 
     def _get_next_batch(self):
@@ -119,7 +123,8 @@ class DataLayer(caffe.Layer):
         # get param 
         self._get_param()
         #judce has label
-        self._has_label = len(top) == 3
+        self._has_label = (len(top) >= 3)
+        self._has_label_g = (len(top) >= 4)
         # get data path from param 
         self._get_data_path()
         # reshape top 
@@ -131,6 +136,9 @@ class DataLayer(caffe.Layer):
         if self._has_label:
             self._blob_name_to_index["label"] = 2
             top[2].reshape(self._batch_size*2,1)
+        if self._has_label_g:
+            self._blob_name_to_index["label_g"] = 3
+            top[3].reshape(self._batch_size*2,1)
 
     def forward(self,bottom,top):
 
