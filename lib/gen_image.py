@@ -3,7 +3,7 @@
 
 import caffe
 import cv2
-import numpy
+import numpy as np
 import yaml
 import os
 class GenLayer(caffe.Layer):
@@ -18,7 +18,8 @@ class GenLayer(caffe.Layer):
 
     def setup(self,bottom,top):
         self._get_param()
-
+        self._i = 0
+        top[0].reshape(1)
         pass
 
     def forward(self,bottom,top):
@@ -26,10 +27,15 @@ class GenLayer(caffe.Layer):
             print "this is no images"
             return 0
         channel_swap = (0, 2, 3, 1)
-        images = bottom[0].transpose(channel_swap)
+        images = np.array(bottom[0].data)
+        images = images.transpose(channel_swap)
+        # record the file num
         for i in xrange(len(images)):
-            name = os.path.join(self._output_folder,str(i)+".jpg")
+            name = os.path.join(self._output_folder,str(self._i)+".jpg")
             cv2.imwrite(name,images[i])
+            self._i = self._i + 1
+        top[0].reshape(1)
+        print "------------ forward is done"
 
     def backward(self,bottom,top):
         pass

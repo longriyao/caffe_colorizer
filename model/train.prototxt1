@@ -9,25 +9,9 @@ layer {
         module: 'data_layer'
         layer: 'DataLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+        param_str: "{\'batch_size\': 16 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
     }
 }
-
-#layer {
-#    name: 'output_color'
-#    type: 'Python'
-#    bottom: "color_image"
-#    top: "output_color"
-#    include {
-#      phase: TEST
-#    }
-#    python_param {
-#        module: 'gen_image'
-#        layer: 'GenLayer'
-#        #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-#        param_str: "{\'output_folder\': \'output_color/\'}"
-#    }
-#}
 
 layer {
     name: "g_conv_1"
@@ -35,7 +19,7 @@ layer {
     bottom: "gray_image"
     top: "g_conv_1"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
     }
     param {
@@ -47,13 +31,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -90,7 +67,7 @@ layer {
     bottom: "g_conv_1"
     top: "g_conv_2"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
     }
     param {
@@ -102,13 +79,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -157,7 +127,7 @@ layer {
     bottom: "g_pooling_2"
     top: "g_conv_3"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
 
     }
@@ -170,13 +140,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -226,7 +189,7 @@ layer {
     bottom: "g_pooling_3"
     top: "g_conv_4"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
     }
     param {
@@ -238,13 +201,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -281,7 +237,7 @@ layer {
     bottom: "g_conv_4"
     top: "g_conv_5"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
     }
     param {
@@ -293,13 +249,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -367,7 +316,7 @@ layer {
     bottom: "g_upsample_1"
     top: "g_conv_6"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
     }
     param {
@@ -379,13 +328,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -452,7 +394,7 @@ layer {
     bottom: "g_upsample_2"
     top: "g_conv_7"
     param {
-        lr_mult: -10
+        lr_mult: -1
         decay_mult: -1
     }
     param {
@@ -464,13 +406,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -530,35 +465,28 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
-#layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_bn_8"
-#	type: "BatchNorm"
-#	batch_norm_param {
-#		use_global_stats: false
-#	}
-#}
-#
-#layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_scale_8"
-#	type: "Scale"
-#	scale_param {
-#		bias_term: true
-#	}
-#}
+layer {
+	bottom: "g_conv_8"
+	top: "g_conv_8"
+	name: "g_bn_8"
+	type: "BatchNorm"
+	batch_norm_param {
+		use_global_stats: false
+	}
+}
+
+layer {
+	bottom: "g_conv_8"
+	top: "g_conv_8"
+	name: "g_scale_8"
+	type: "Scale"
+	scale_param {
+		bias_term: true
+	}
+}
 
 layer {
     name: "g_relu_8"
@@ -585,31 +513,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
-    }
-}
-
-layer {
-    name: 'output'
-    type: 'Python'
-    bottom: 'g_conv_9'
-    bottom: "color_image"
-    bottom: "label"
-    top: "output"
-    include {
-      phase: TEST
-    }
-    python_param {
-        module: 'gen_image'
-        layer: 'GenLayer'
-        #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'output_folder\': \'output/\'}"
     }
 }
 
@@ -618,9 +521,6 @@ layer {
 	top: "g_conv_9"
 	name: "g_bn_9"
 	type: "BatchNorm"
-	include {
-      phase: TRAIN
-    }
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -634,9 +534,6 @@ layer {
 	scale_param {
 		bias_term: true
 	}
-	include {
-      phase: TRAIN
-    }
 }
 
 layer {
@@ -644,9 +541,6 @@ layer {
     type: "Sigmoid"
     bottom: "g_conv_9"
     top: "g_conv_9"
-	include {
-      phase: TRAIN
-    }
 }
 # concat the g_deconv and color_image
 
@@ -659,9 +553,6 @@ layer {
     concat_param{
         axis:0
     }
-	include {
-      phase: TRAIN
-    }
 }
 
 layer {
@@ -669,9 +560,6 @@ layer {
     type: "Convolution"
     bottom: "concat_2"
     top: "d_conv_1"
-	include {
-      phase: TRAIN
-    }
     param {
         lr_mult: 1
         decay_mult: 1
@@ -685,13 +573,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -701,18 +582,12 @@ layer {
     type: "ReLU"
     bottom: "d_conv_1"
     top: "d_conv_1"
-	include {
-      phase: TRAIN
-    }
 }
 layer {
     name: "d_dropout_1"
     type: "Dropout"
     bottom: "d_conv_1"
     top: "d_conv_1"
-	include {
-      phase: TRAIN
-    }
     dropout_param{
         dropout_ratio: 0.25
     }
@@ -722,9 +597,6 @@ layer {
     type: "Pooling"
     bottom: "d_conv_1"
     top: "d_pooling_1"
-	include {
-      phase: TRAIN
-    }
     pooling_param{
         pool: AVE
         kernel_size: 2
@@ -737,9 +609,6 @@ layer {
     type: "Convolution"
     bottom: "d_pooling_1"
     top: "d_conv_2"
-	include {
-      phase: TRAIN
-    }
     param {
         lr_mult: 1
         decay_mult: 1
@@ -753,13 +622,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -769,9 +631,6 @@ layer {
     type: "ReLU"
     bottom: "d_conv_2"
     top: "d_conv_2"
-	include {
-      phase: TRAIN
-    }
 }
 layer {
     name: "d_dropout_2"
@@ -781,9 +640,6 @@ layer {
     dropout_param{
         dropout_ratio: 0.25
     }
-	include {
-      phase: TRAIN
-    }
 }
 
 layer {
@@ -791,9 +647,6 @@ layer {
     type: "Convolution"
     bottom: "d_conv_2"
     top: "d_conv_3"
-	include {
-      phase: TRAIN
-    }
     param {
         lr_mult: 1
         decay_mult: 1
@@ -807,13 +660,6 @@ layer {
         pad: 1
         stride: 1
         kernel_size: 3
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 }
 
@@ -823,9 +669,6 @@ layer {
     type: "ReLU"
     bottom: "d_conv_3"
     top: "d_conv_3"
-	include {
-      phase: TRAIN
-    }
 }
 layer {
     name: "d_dropout_3"
@@ -835,18 +678,12 @@ layer {
     dropout_param{
         dropout_ratio: 0.25
     }
-	include {
-      phase: TRAIN
-    }
 }
 layer {
     name: "d_pooling_3"
     type: "Pooling"
     bottom: "d_conv_3"
     top: "d_pooling_3"
-	include {
-      phase: TRAIN
-    }
     pooling_param{
         pool: MAX
         kernel_size: 2
@@ -860,9 +697,6 @@ layer {
     type: "InnerProduct"
     bottom: "d_pooling_3"
     top: "d_fc_4"
-	include {
-      phase: TRAIN
-    }
     param {
         lr_mult: 1
         decay_mult: 1
@@ -873,13 +707,6 @@ layer {
     }
     inner_product_param {
         num_output: 128
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 
 }
@@ -888,9 +715,6 @@ layer {
     type: "PReLU"
     bottom: "d_fc_4"
     top: "d_fc_4"
-	include {
-      phase: TRAIN
-    }
 }
 
 layer {
@@ -900,9 +724,6 @@ layer {
     top: "d_fc_4"
     dropout_param{
         dropout_ratio: 0.5
-    }
-	include {
-      phase: TRAIN
     }
 }
 
@@ -919,18 +740,8 @@ layer {
         lr_mult: 2
         decay_mult: 0
     }
-	include {
-      phase: TRAIN
-    }
     inner_product_param {
         num_output: 1
-        weight_filler {
-          type: "xavier"
-        }
-        bias_filler {
-          type: "constant"
-          value: 0
-        }
     }
 
 }
@@ -940,9 +751,6 @@ layer {
     bottom: "d_fc_5"
     bottom: "label"
     top: "sigmoid_loss"
-	include {
-      phase: TRAIN
-    }
 }
 #layer {
     #name: "d_sigmoid_5"

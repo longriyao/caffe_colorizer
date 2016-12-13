@@ -49,3 +49,7 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+out_unaug_64x64/
+out_unaug_64x64*
+output*
+state
