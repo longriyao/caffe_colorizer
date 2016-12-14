@@ -10,7 +10,7 @@ layer {
         module: 'data_layer'
         layer: 'DataLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+        param_str: "{\'batch_size\': 2 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
     }
 }
 
@@ -36,10 +36,12 @@ layer {
     bottom: "gray_image"
     top: "g_conv_1"
     param {
+        name: "g_conv_1_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_1_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -92,10 +94,12 @@ layer {
     bottom: "g_conv_1"
     top: "g_conv_2"
     param {
+        name: "g_conv_2_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_2_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -159,11 +163,13 @@ layer {
     bottom: "g_pooling_2"
     top: "g_conv_3"
     param {
+        name: "g_conv_3_w"
         lr_mult: 0
         decay_mult: 0
 
     }
     param {
+        name: "g_conv_3_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -228,10 +234,12 @@ layer {
     bottom: "g_pooling_3"
     top: "g_conv_4"
     param {
+        name: "g_conv_4_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_4_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -283,10 +291,12 @@ layer {
     bottom: "g_conv_4"
     top: "g_conv_5"
     param {
+        name: "g_conv_5_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_5_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -369,10 +379,12 @@ layer {
     bottom: "g_upsample_1"
     top: "g_conv_6"
     param {
+        name: "g_conv_6_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_6_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -454,10 +466,12 @@ layer {
     bottom: "g_upsample_2"
     top: "g_conv_7"
     param {
+        name: "g_conv_7_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_7_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -520,10 +534,12 @@ layer {
     bottom: "concat"
     top: "g_conv_8"
     param {
+        name: "g_conv_8_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_8_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -575,10 +591,12 @@ layer {
     bottom: "g_conv_8"
     top: "g_conv_9"
     param {
+        name: "g_conv_9_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "g_conv_9_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -676,10 +694,12 @@ layer {
       phase: TRAIN
     }
     param {
+        name: "d_conv_1_w"
         lr_mult: 1
         decay_mult: 1
     }
     param {
+         name: "d_conv_1_b"
         lr_mult: 2
         decay_mult: 0
     }
@@ -744,10 +764,12 @@ layer {
       phase: TRAIN
     }
     param {
+        name: "d_conv_2_w"
         lr_mult: 1
         decay_mult: 1
     }
     param {
+        name: "d_conv_2_b"
         lr_mult: 2
         decay_mult: 0
     }
@@ -798,10 +820,12 @@ layer {
       phase: TRAIN
     }
     param {
+        name: "d_conv_3_w"
         lr_mult: 1
         decay_mult: 1
     }
     param {
+        name: "d_conv_3_b"
         lr_mult: 2
         decay_mult: 0
     }
@@ -867,10 +891,12 @@ layer {
       phase: TRAIN
     }
     param {
+        name: "d_fc_4_w"
         lr_mult: 1
         decay_mult: 1
     }
     param {
+        name: "d_fc_4_b"
         lr_mult: 2
         decay_mult: 0
     }
@@ -915,10 +941,12 @@ layer {
     bottom: "d_fc_4"
     top: "d_fc_5"
     param {
+        name: "d_fc_5_w"
         lr_mult: 1
         decay_mult: 1
     }
     param {
+        name: "d_fc_5_b"
         lr_mult: 2
         decay_mult: 0
     }
@@ -974,9 +1002,10 @@ layer {
     param {
         lr_mult: 10
         decay_mult: 1
-        name: "g_conv_1"
+        name: "g_conv_1_w"
     }
     param {
+        name: "g_conv_1_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1027,7 +1056,7 @@ layer {
     bottom: "g_conv_1_g"
     top: "g_conv_2_g"
     param {
-        name: "g_conv_2"
+        name: "g_conv_2_w"
         lr_mult: 10
         decay_mult: 1
     }
@@ -1035,6 +1064,7 @@ layer {
       phase: TRAIN
     }
     param {
+        name: "g_conv_2_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1110,12 +1140,13 @@ layer {
     bottom: "g_pooling_2_g"
     top: "g_conv_3_g"
     param {
-        name: "g_conv_3"
+        name: "g_conv_3_w"
         lr_mult: 10
         decay_mult: 1
 
     }
     param {
+        name: "g_conv_3_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1195,11 +1226,12 @@ layer {
     bottom: "g_pooling_3_g"
     top: "g_conv_4_g"
     param {
-        name: "g_conv_4"
+        name: "g_conv_4_w"
         lr_mult: 10
         decay_mult: 1
     }
     param {
+        name: "g_conv_4_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1263,11 +1295,12 @@ layer {
     bottom: "g_conv_4_g"
     top: "g_conv_5_g"
     param {
-        name: "g_conv_5"
+        name: "g_conv_5_w"
         lr_mult: 10
         decay_mult: 1
     }
     param {
+        name: "g_conv_5_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1365,11 +1398,12 @@ layer {
     bottom: "g_upsample_1_g"
     top: "g_conv_6_g"
     param {
-        name: "g_conv_6"
+        name: "g_conv_6_w"
         lr_mult: 10
         decay_mult: 1
     }
     param {
+        name: "g_conv_6_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1466,11 +1500,12 @@ layer {
     bottom: "g_upsample_2_g"
     top: "g_conv_7_g"
     param {
-        name: "g_conv_7"
+        name: "g_conv_7_w"
         lr_mult: 10
         decay_mult: 1
     }
     param {
+        name: "g_conv_7_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1548,11 +1583,12 @@ layer {
     bottom: "concat_g"
     top: "g_conv_8_g"
     param {
-        name: "g_conv_8"
+        name: "g_conv_8_w"
         lr_mult: 10
         decay_mult: 1
     }
     param {
+        name: "g_conv_8_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1616,11 +1652,12 @@ layer {
     bottom: "g_conv_8_g"
     top: "g_conv_9_g"
     param {
-        name: "g_conv_9"
+        name: "g_conv_9_w"
         lr_mult: 10
         decay_mult: 1
     }
     param {
+        name: "g_conv_9_b"
         lr_mult: 20
         decay_mult: 0
     }
@@ -1702,11 +1739,12 @@ layer {
       phase: TRAIN
     }
     param {
-        name: "d_conv_1"
+        name: "d_conv_1_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "d_conv_1_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -1771,11 +1809,12 @@ layer {
       phase: TRAIN
     }
     param {
-        name: "d_conv_2"
+        name: "d_conv_2_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "d_conv_2_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -1826,11 +1865,12 @@ layer {
       phase: TRAIN
     }
     param {
-        name: "d_conv_3"
+        name: "d_conv_3_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "d_conv_3_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -1896,11 +1936,12 @@ layer {
       phase: TRAIN
     }
     param {
-        name: "d_fc_4"
+        name: "d_fc_4_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "d_fc_4_b"
         lr_mult: 0
         decay_mult: 0
     }
@@ -1945,11 +1986,12 @@ layer {
     bottom: "d_fc_4_g"
     top: "d_fc_5_g"
     param {
-        name: "d_fc_5"
+        name: "d_fc_5_w"
         lr_mult: 0
         decay_mult: 0
     }
     param {
+        name: "d_fc_5_b"
         lr_mult: 0
         decay_mult: 0
     }
