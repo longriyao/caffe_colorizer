@@ -39,7 +39,7 @@ layer {
         decay_mult: -1
     }
     param {
-        lr_mult: -2
+        lr_mult: -20
         decay_mult: 0
     }
     convolution_param{
@@ -94,7 +94,7 @@ layer {
         decay_mult: -1
     }
     param {
-        lr_mult: -2
+        lr_mult: -20
         decay_mult: 0
     }
     convolution_param{
@@ -162,7 +162,7 @@ layer {
 
     }
     param {
-        lr_mult: -2
+        lr_mult: -20
         decay_mult: 0
     }
     convolution_param{
@@ -518,11 +518,11 @@ layer {
     bottom: "concat"
     top: "g_conv_8"
     param {
-        lr_mult: -1
+        lr_mult: -10
         decay_mult: -1
     }
     param {
-        lr_mult: -2
+        lr_mult: -20
         decay_mult: 0
     }
     convolution_param{
@@ -540,25 +540,25 @@ layer {
     }
 }
 
-#layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_bn_8"
-#	type: "BatchNorm"
-#	batch_norm_param {
-#		use_global_stats: false
-#	}
-#}
-#
-#layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_scale_8"
-#	type: "Scale"
-#	scale_param {
-#		bias_term: true
-#	}
-#}
+layer {
+	bottom: "g_conv_8"
+	top: "g_conv_8"
+	name: "g_bn_8"
+	type: "BatchNorm"
+	batch_norm_param {
+		use_global_stats: false
+	}
+}
+
+layer {
+	bottom: "g_conv_8"
+	top: "g_conv_8"
+	name: "g_scale_8"
+	type: "Scale"
+	scale_param {
+		bias_term: true
+	}
+}
 
 layer {
     name: "g_relu_8"
@@ -573,11 +573,11 @@ layer {
     bottom: "g_conv_8"
     top: "g_conv_9"
     param {
-        lr_mult: -1
+        lr_mult: -10
         decay_mult: -1
     }
     param {
-        lr_mult: -2
+        lr_mult: -20
         decay_mult: 0
     }
     convolution_param{
@@ -641,7 +641,7 @@ layer {
 
 layer {
     name: "g_sigmoid_9"
-    type: "Sigmoid"
+    type: "ReLU"
     bottom: "g_conv_9"
     top: "g_conv_9"
 	include {

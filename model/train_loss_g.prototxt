@@ -10,7 +10,7 @@ layer {
         module: 'data_layer'
         layer: 'DataLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'batch_size\': 2 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+        param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
     }
 }
 
@@ -36,14 +36,13 @@ layer {
     bottom: "gray_image"
     top: "g_conv_1"
     param {
-        lr_mult: -10
-        decay_mult: -1
-    }
-    param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
-    propagate_down: false
+    param {
+        lr_mult: 0
+        decay_mult: 0
+    }
     convolution_param{
         num_output: 16
         pad: 1
@@ -65,7 +64,6 @@ layer {
 	name: "g_bn_1"
 	type: "BatchNorm"
 
-    propagate_down: false
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -76,7 +74,6 @@ layer {
 	top: "g_conv_1"
 	name: "g_scale_1"
 	type: "Scale"
-    propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -87,7 +84,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_1"
     top: "g_conv_1"
-    propagate_down: false
 }
 
 layer {
@@ -95,13 +91,12 @@ layer {
     type: "Convolution"
     bottom: "g_conv_1"
     top: "g_conv_2"
-    propagate_down: false
     param {
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -124,7 +119,6 @@ layer {
 	top: "g_conv_2"
 	name: "g_bn_2"
 	type: "BatchNorm"
-	propagate_down: false
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -135,7 +129,6 @@ layer {
 	top: "g_conv_2"
 	name: "g_scale_2"
 	type: "Scale"
-	propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -146,7 +139,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_2"
     top: "g_conv_2"
-    propagate_down: false
 }
 
 layer {
@@ -155,7 +147,6 @@ layer {
     bottom: "g_conv_2"
     top: "g_pooling_2"
     top: "g_pooling_2_mask"
-    propagate_down: false
     pooling_param{
         pool: MAX
         kernel_size: 2
@@ -168,15 +159,14 @@ layer {
     bottom: "g_pooling_2"
     top: "g_conv_3"
     param {
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 0
+        decay_mult: 0
 
     }
     param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
-    propagate_down: false
     convolution_param{
         num_output: 64
         pad: 1
@@ -197,7 +187,6 @@ layer {
 	top: "g_conv_3"
 	name: "g_bn_"
 	type: "BatchNorm"
-	propagate_down: false
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -208,7 +197,6 @@ layer {
 	top: "g_conv_3"
 	name: "g_scale_3"
 	type: "Scale"
-	propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -219,7 +207,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_3"
     top: "g_conv_3"
-    propagate_down: false
 }
 
 layer {
@@ -228,7 +215,6 @@ layer {
     bottom: "g_conv_3"
     top: "g_pooling_3"
     top: "g_pooling_3_mask"
-    propagate_down: false
     pooling_param{
         pool: MAX
         kernel_size:2
@@ -241,13 +227,12 @@ layer {
     type: "Convolution"
     bottom: "g_pooling_3"
     top: "g_conv_4"
-    propagate_down: false
     param {
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -268,7 +253,6 @@ layer {
 layer {
 	bottom: "g_conv_4"
 	top: "g_conv_4"
-	propagate_down: false
 	name: "g_bn_4"
 	type: "BatchNorm"
 	batch_norm_param {
@@ -281,7 +265,6 @@ layer {
 	top: "g_conv_4"
 	name: "g_scale_4"
 	type: "Scale"
-	propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -292,7 +275,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_4"
     top: "g_conv_4"
-    propagate_down: false
 }
 
 layer {
@@ -301,14 +283,13 @@ layer {
     bottom: "g_conv_4"
     top: "g_conv_5"
     param {
-        lr_mult: -10
-        decay_mult: -1
-    }
-    param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
-    propagate_down: false
+    param {
+        lr_mult: 0
+        decay_mult: 0
+    }
     convolution_param{
         num_output: 64
         pad: 1
@@ -329,7 +310,6 @@ layer {
 	top: "g_conv_5"
 	name: "g_bn_5"
 	type: "BatchNorm"
-	propagate_down: false
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -340,7 +320,6 @@ layer {
 	top: "g_conv_5"
 	name: "g_scale_5"
 	type: "Scale"
-	propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -351,7 +330,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_5"
     top: "g_conv_5"
-    propagate_down: false
 }
 #upsample
 
@@ -360,8 +338,6 @@ layer {
   type: "Upsample"
   bottom: "g_conv_5"
   bottom: "g_pooling_3_mask"
-  propagate_down: false
-  propagate_down: false
   top: "g_upsample_1"
   upsample_param {
     scale: 2
@@ -393,14 +369,13 @@ layer {
     bottom: "g_upsample_1"
     top: "g_conv_6"
     param {
-        lr_mult: -10
-        decay_mult: -1
-    }
-    param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
-    propagate_down: false
+    param {
+        lr_mult: 0
+        decay_mult: 0
+    }
     convolution_param{
         num_output: 32
         pad: 1
@@ -421,7 +396,6 @@ layer {
 	top: "g_conv_6"
 	name: "g_bn_6"
 	type: "BatchNorm"
-	propagate_down: false
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -432,7 +406,6 @@ layer {
 	top: "g_conv_6"
 	name: "g_scale_6"
 	type: "Scale"
-	propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -443,7 +416,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_6"
     top: "g_conv_6"
-    propagate_down: false
 }
 #upsampling
 layer {
@@ -452,8 +424,6 @@ layer {
   bottom: "g_conv_6"
   bottom: "g_pooling_2_mask"
   top: "g_upsample_2"
-  propagate_down: false
-  propagate_down: false
   upsample_param {
     scale: 2
     #upsample_w: 30
@@ -483,13 +453,12 @@ layer {
     type: "Convolution"
     bottom: "g_upsample_2"
     top: "g_conv_7"
-    propagate_down: false
     param {
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -512,7 +481,6 @@ layer {
 	top: "g_conv_7"
 	name: "g_bn_7"
 	type: "BatchNorm"
-	propagate_down: false
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -522,7 +490,6 @@ layer {
 	bottom: "g_conv_7"
 	top: "g_conv_7"
 	name: "g_scale_7"
-	propagate_down: false
 	type: "Scale"
 	scale_param {
 		bias_term: true
@@ -534,7 +501,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_7"
     top: "g_conv_7"
-    propagate_down: false
 }
 
 layer {
@@ -542,8 +508,6 @@ layer {
     type: "Concat"
     bottom: "gray_image"
     bottom: "g_conv_7"
-    propagate_down: false
-    propagate_down: false
     top: "concat"
     concat_param{
         axis : 1
@@ -555,13 +519,12 @@ layer {
     type: "Convolution"
     bottom: "concat"
     top: "g_conv_8"
-    propagate_down: false
     param {
-        lr_mult: -1
-        decay_mult: -1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -580,23 +543,23 @@ layer {
 }
 
 #layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_bn_8"
-#	type: "BatchNorm"
-#	batch_norm_param {
-#		use_global_stats: false
-#	}
+	#bottom: "g_conv_8"
+	#top: "g_conv_8"
+	#name: "g_bn_8"
+	#type: "BatchNorm"
+	#batch_norm_param {
+		#use_global_stats: false
+	#}
 #}
-#
+
 #layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_scale_8"
-#	type: "Scale"
-#	scale_param {
-#		bias_term: true
-#	}
+	#bottom: "g_conv_8"
+	#top: "g_conv_8"
+	#name: "g_scale_8"
+	#type: "Scale"
+	#scale_param {
+		#bias_term: true
+	#}
 #}
 
 layer {
@@ -604,7 +567,6 @@ layer {
     type: "ReLU"
     bottom: "g_conv_8"
     top: "g_conv_8"
-    propagate_down: false
 }
 
 layer {
@@ -612,13 +574,12 @@ layer {
     type: "Convolution"
     bottom: "g_conv_8"
     top: "g_conv_9"
-    propagate_down: false
     param {
-        lr_mult: -1
-        decay_mult: -1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: -2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -642,6 +603,7 @@ layer {
     bottom: 'g_conv_9'
     bottom: "color_image"
     bottom: "label"
+    bottom: "label_g"
     top: "output"
     include {
       phase: TEST
@@ -659,7 +621,6 @@ layer {
 	top: "g_conv_9"
 	name: "g_bn_9"
 	type: "BatchNorm"
-	propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -673,7 +634,6 @@ layer {
 	top: "g_conv_9"
 	name: "g_scale_9"
 	type: "Scale"
-	propagate_down: false
 	scale_param {
 		bias_term: true
 	}
@@ -684,10 +644,9 @@ layer {
 
 layer {
     name: "g_sigmoid_9"
-    type: "Sigmoid"
+    type: "ReLU"
     bottom: "g_conv_9"
     top: "g_conv_9"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -700,8 +659,6 @@ layer {
     bottom: "color_image"
     bottom: "g_conv_9"
     top: "concat_2"
-    propagate_down: false
-    propagate_down: false
     concat_param{
         axis:0
     }
@@ -993,6 +950,9 @@ layer {
 
 
 
+
+
+# the network trained g model
 layer {
     name: "g_conv_1_g"
     type: "Convolution"
@@ -1012,13 +972,16 @@ layer {
         }
     }
     param {
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
         name: "g_conv_1"
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
+    }
+    include {
+      phase: TRAIN
     }
 }
 
@@ -1030,6 +993,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1040,6 +1006,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1047,6 +1016,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_1_g"
     top: "g_conv_1_g"
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1056,11 +1028,14 @@ layer {
     top: "g_conv_2_g"
     param {
         name: "g_conv_2"
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
+    }
+    include {
+      phase: TRAIN
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
     }
     convolution_param{
@@ -1086,6 +1061,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1096,6 +1074,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1103,6 +1084,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_2_g"
     top: "g_conv_2_g"
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1116,6 +1100,9 @@ layer {
         kernel_size: 2
         stride: 2
     }
+    include {
+      phase: TRAIN
+    }
 }
 layer {
     name: "g_conv_3_g"
@@ -1124,12 +1111,12 @@ layer {
     top: "g_conv_3_g"
     param {
         name: "g_conv_3"
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
 
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
     }
     convolution_param{
@@ -1145,6 +1132,9 @@ layer {
           value: 0
         }
     }
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1155,6 +1145,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1165,6 +1158,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1172,6 +1168,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_3_g"
     top: "g_conv_3_g"
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1185,6 +1184,9 @@ layer {
         kernel_size:2
         stride: 2
     }
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1194,11 +1196,11 @@ layer {
     top: "g_conv_4_g"
     param {
         name: "g_conv_4"
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
     }
     convolution_param{
@@ -1214,6 +1216,9 @@ layer {
           value: 0
         }
     }
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1224,6 +1229,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1234,6 +1242,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1241,6 +1252,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_4_g"
     top: "g_conv_4_g"
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1250,12 +1264,15 @@ layer {
     top: "g_conv_5_g"
     param {
         name: "g_conv_5"
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
+    }
+    include {
+      phase: TRAIN
     }
     convolution_param{
         num_output: 64
@@ -1280,6 +1297,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1290,6 +1310,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1297,6 +1320,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_5_g"
     top: "g_conv_5_g"
+    include {
+      phase: TRAIN
+    }
 }
 #upsample
 
@@ -1311,6 +1337,9 @@ layer {
     #upsample_w: 30
     #upsample_h: 23
   }
+  include {
+      phase: TRAIN
+    }
 }
 
 #layer {
@@ -1337,11 +1366,11 @@ layer {
     top: "g_conv_6_g"
     param {
         name: "g_conv_6"
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
     }
     convolution_param{
@@ -1357,6 +1386,9 @@ layer {
           value: 0
         }
     }
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1367,6 +1399,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1377,6 +1412,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1384,6 +1422,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_6_g"
     top: "g_conv_6_g"
+    include {
+      phase: TRAIN
+    }
 }
 #upsampling
 layer {
@@ -1392,6 +1433,9 @@ layer {
   bottom: "g_conv_6_g"
   bottom: "g_pooling_2_mask_g"
   top: "g_upsample_2_g"
+  include {
+      phase: TRAIN
+    }
   upsample_param {
     scale: 2
     #upsample_w: 30
@@ -1423,11 +1467,11 @@ layer {
     top: "g_conv_7_g"
     param {
         name: "g_conv_7"
-        lr_mult: -10
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
     }
     convolution_param{
@@ -1443,6 +1487,9 @@ layer {
           value: 0
         }
     }
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1453,6 +1500,9 @@ layer {
 	batch_norm_param {
 		use_global_stats: false
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1463,6 +1513,9 @@ layer {
 	scale_param {
 		bias_term: true
 	}
+	include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1470,6 +1523,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_7_g"
     top: "g_conv_7_g"
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1481,6 +1537,9 @@ layer {
     concat_param{
         axis : 1
     }
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1490,12 +1549,15 @@ layer {
     top: "g_conv_8_g"
     param {
         name: "g_conv_8"
-        lr_mult: -1
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
+    }
+    include {
+      phase: TRAIN
     }
     convolution_param{
         num_output: 32
@@ -1513,23 +1575,29 @@ layer {
 }
 
 #layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_bn_8"
-#	type: "BatchNorm"
-#	batch_norm_param {
-#		use_global_stats: false
-#	}
+	#bottom: "g_conv_8_g"
+	#top: "g_conv_8_g"
+	#name: "g_bn_8_g"
+	#type: "BatchNorm"
+	#include {
+      #phase: TRAIN
+    #}
+	#batch_norm_param {
+		#use_global_stats: false
+	#}
 #}
-#
+
 #layer {
-#	bottom: "g_conv_8"
-#	top: "g_conv_8"
-#	name: "g_scale_8"
-#	type: "Scale"
-#	scale_param {
-#		bias_term: true
-#	}
+	#bottom: "g_conv_8_g"
+	#top: "g_conv_8_g"
+	#name: "g_scale_8_g"
+	#type: "Scale"
+	#include {
+      #phase: TRAIN
+    #}
+	#scale_param {
+		#bias_term: true
+	#}
 #}
 
 layer {
@@ -1537,6 +1605,9 @@ layer {
     type: "ReLU"
     bottom: "g_conv_8_g"
     top: "g_conv_8_g"
+    include {
+      phase: TRAIN
+    }
 }
 
 layer {
@@ -1546,12 +1617,15 @@ layer {
     top: "g_conv_9_g"
     param {
         name: "g_conv_9"
-        lr_mult: -1
-        decay_mult: -1
+        lr_mult: 10
+        decay_mult: 1
     }
     param {
-        lr_mult: -2
+        lr_mult: 20
         decay_mult: 0
+    }
+	include {
+      phase: TRAIN
     }
     convolution_param{
         num_output: 3
@@ -1596,7 +1670,7 @@ layer {
 
 layer {
     name: "g_sigmoid_9_g"
-    type: "Sigmoid"
+    type: "ReLU"
     bottom: "g_conv_9_g"
     top: "g_conv_9_g"
 	include {
@@ -1624,17 +1698,16 @@ layer {
     type: "Convolution"
     bottom: "concat_2_g"
     top: "d_conv_1_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
     param {
         name: "d_conv_1"
-        lr_mult: 1
-        decay_mult: 1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: 2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -1658,7 +1731,6 @@ layer {
     type: "ReLU"
     bottom: "d_conv_1_g"
     top: "d_conv_1_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1668,7 +1740,6 @@ layer {
     type: "Dropout"
     bottom: "d_conv_1_g"
     top: "d_conv_1_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1681,7 +1752,6 @@ layer {
     type: "Pooling"
     bottom: "d_conv_1_g"
     top: "d_pooling_1_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1697,17 +1767,16 @@ layer {
     type: "Convolution"
     bottom: "d_pooling_1_g"
     top: "d_conv_2_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
     param {
         name: "d_conv_2"
-        lr_mult: 1
-        decay_mult: 1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: 2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -1731,7 +1800,6 @@ layer {
     type: "ReLU"
     bottom: "d_conv_2_g"
     top: "d_conv_2_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1741,7 +1809,6 @@ layer {
     type: "Dropout"
     bottom: "d_conv_2_g"
     top: "d_conv_2_g"
-    propagate_down: false
     dropout_param{
         dropout_ratio: 0.25
     }
@@ -1755,17 +1822,16 @@ layer {
     type: "Convolution"
     bottom: "d_conv_2_g"
     top: "d_conv_3_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
     param {
         name: "d_conv_3"
-        lr_mult: 1
-        decay_mult: 1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: 2
+        lr_mult: 0
         decay_mult: 0
     }
     convolution_param{
@@ -1789,7 +1855,6 @@ layer {
     type: "ReLU"
     bottom: "d_conv_3_g"
     top: "d_conv_3_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1799,7 +1864,6 @@ layer {
     type: "Dropout"
     bottom: "d_conv_3_g"
     top: "d_conv_3_g"
-    propagate_down: false
     dropout_param{
         dropout_ratio: 0.25
     }
@@ -1812,7 +1876,6 @@ layer {
     type: "Pooling"
     bottom: "d_conv_3_g"
     top: "d_pooling_3_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1829,17 +1892,16 @@ layer {
     type: "InnerProduct"
     bottom: "d_pooling_3_g"
     top: "d_fc_4_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
     param {
         name: "d_fc_4"
-        lr_mult: 1
-        decay_mult: 1
+        lr_mult: 0
+        decay_mult: 0
     }
     param {
-        lr_mult: 2
+        lr_mult: 0
         decay_mult: 0
     }
     inner_product_param {
@@ -1859,7 +1921,6 @@ layer {
     type: "PReLU"
     bottom: "d_fc_4_g"
     top: "d_fc_4_g"
-    propagate_down: false
 	include {
       phase: TRAIN
     }
@@ -1870,7 +1931,6 @@ layer {
     type: "Dropout"
     bottom: "d_fc_4_g"
     top: "d_fc_4_g"
-    propagate_down: false
     dropout_param{
         dropout_ratio: 0.5
     }
@@ -1886,14 +1946,13 @@ layer {
     top: "d_fc_5_g"
     param {
         name: "d_fc_5"
-        lr_mult: 1
-        decay_mult: 1
-    }
-    param {
-        lr_mult: 2
+        lr_mult: 0
         decay_mult: 0
     }
-    propagate_down: false
+    param {
+        lr_mult: 0
+        decay_mult: 0
+    }
 	include {
       phase: TRAIN
     }
@@ -1921,5 +1980,4 @@ layer {
 	include {
       phase: TRAIN
     }
-    loss_weight: 1
 }
