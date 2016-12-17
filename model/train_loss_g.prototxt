@@ -10,7 +10,7 @@ layer {
         module: 'data_layer'
         layer: 'DataLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'batch_size\': 2 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+        param_str: "{\'batch_size\': 1 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
     }
 }
 
@@ -35,15 +35,18 @@ layer {
     type: "Convolution"
     bottom: "gray_image"
     top: "g_conv_1"
+    propagate_down: 0
     param {
         name: "g_conv_1_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_1_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 16
@@ -93,15 +96,18 @@ layer {
     type: "Convolution"
     bottom: "g_conv_1"
     top: "g_conv_2"
+    propagate_down: 0
     param {
         name: "g_conv_2_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_2_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 32
@@ -162,16 +168,19 @@ layer {
     type: "Convolution"
     bottom: "g_pooling_2"
     top: "g_conv_3"
+    propagate_down: 0
     param {
         name: "g_conv_3_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
 
     }
     param {
         name: "g_conv_3_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 64
@@ -233,15 +242,18 @@ layer {
     type: "Convolution"
     bottom: "g_pooling_3"
     top: "g_conv_4"
+    propagate_down: 0
     param {
         name: "g_conv_4_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_4_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 128
@@ -290,15 +302,18 @@ layer {
     type: "Convolution"
     bottom: "g_conv_4"
     top: "g_conv_5"
+    propagate_down: 0
     param {
         name: "g_conv_5_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_5_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 64
@@ -378,15 +393,18 @@ layer {
     type: "Convolution"
     bottom: "g_upsample_1"
     top: "g_conv_6"
+    propagate_down: 0
     param {
         name: "g_conv_6_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_6_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 32
@@ -465,15 +483,18 @@ layer {
     type: "Convolution"
     bottom: "g_upsample_2"
     top: "g_conv_7"
+    propagate_down: 0
     param {
         name: "g_conv_7_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_7_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 64
@@ -533,15 +554,18 @@ layer {
     type: "Convolution"
     bottom: "concat"
     top: "g_conv_8"
+    propagate_down: 0
     param {
         name: "g_conv_8_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_8_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 32
@@ -590,15 +614,18 @@ layer {
     type: "Convolution"
     bottom: "g_conv_8"
     top: "g_conv_9"
+    propagate_down: 0
     param {
         name: "g_conv_9_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "g_conv_9_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 3
@@ -1000,13 +1027,13 @@ layer {
         }
     }
     param {
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
         name: "g_conv_1_w"
     }
     param {
         name: "g_conv_1_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     include {
@@ -1057,7 +1084,7 @@ layer {
     top: "g_conv_2_g"
     param {
         name: "g_conv_2_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     include {
@@ -1065,7 +1092,7 @@ layer {
     }
     param {
         name: "g_conv_2_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     convolution_param{
@@ -1141,13 +1168,13 @@ layer {
     top: "g_conv_3_g"
     param {
         name: "g_conv_3_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
 
     }
     param {
         name: "g_conv_3_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     convolution_param{
@@ -1227,12 +1254,12 @@ layer {
     top: "g_conv_4_g"
     param {
         name: "g_conv_4_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     param {
         name: "g_conv_4_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     convolution_param{
@@ -1296,12 +1323,12 @@ layer {
     top: "g_conv_5_g"
     param {
         name: "g_conv_5_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     param {
         name: "g_conv_5_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     include {
@@ -1399,12 +1426,12 @@ layer {
     top: "g_conv_6_g"
     param {
         name: "g_conv_6_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     param {
         name: "g_conv_6_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     convolution_param{
@@ -1501,12 +1528,12 @@ layer {
     top: "g_conv_7_g"
     param {
         name: "g_conv_7_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     param {
         name: "g_conv_7_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     convolution_param{
@@ -1584,12 +1611,12 @@ layer {
     top: "g_conv_8_g"
     param {
         name: "g_conv_8_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     param {
         name: "g_conv_8_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
     include {
@@ -1653,12 +1680,12 @@ layer {
     top: "g_conv_9_g"
     param {
         name: "g_conv_9_w"
-        lr_mult: 10
+        lr_mult: 1
         decay_mult: 1
     }
     param {
         name: "g_conv_9_b"
-        lr_mult: 20
+        lr_mult: 2
         decay_mult: 0
     }
 	include {
@@ -1740,13 +1767,15 @@ layer {
     }
     param {
         name: "d_conv_1_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "d_conv_1_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 64
@@ -1810,13 +1839,15 @@ layer {
     }
     param {
         name: "d_conv_2_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "d_conv_2_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 128
@@ -1866,13 +1897,15 @@ layer {
     }
     param {
         name: "d_conv_3_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "d_conv_3_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     convolution_param{
         num_output: 256
@@ -1937,13 +1970,15 @@ layer {
     }
     param {
         name: "d_fc_4_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "d_fc_4_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
     inner_product_param {
         num_output: 128
@@ -1987,13 +2022,15 @@ layer {
     top: "d_fc_5_g"
     param {
         name: "d_fc_5_w"
-        lr_mult: 0
-        decay_mult: 0
+        lr_mult: 1
+        decay_mult: 1
+        param_propagate_down: 0
     }
     param {
         name: "d_fc_5_b"
-        lr_mult: 0
+        lr_mult: 2
         decay_mult: 0
+        param_propagate_down: 0
     }
 	include {
       phase: TRAIN
