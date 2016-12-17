@@ -497,7 +497,7 @@ layer {
         param_propagate_down: 0
     }
     convolution_param{
-        num_output: 64
+        num_output: 16
         pad: 1
         stride: 1
         kernel_size: 3
@@ -1537,7 +1537,7 @@ layer {
         decay_mult: 0
     }
     convolution_param{
-        num_output: 64
+        num_output: 16
         pad: 1
         stride: 1
         kernel_size: 3
