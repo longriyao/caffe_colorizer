@@ -10,7 +10,7 @@ layer {
         module: 'data_layer'
         layer: 'DataLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'batch_size\': 1 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+        param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
     }
 }
 

@@ -12,7 +12,7 @@ layer {
   python_param {
     module: "data_layer"
     layer: "DataLayer"
-    param_str: "{\'batch_size\': 1 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+    param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
   }
 }
 layer {
