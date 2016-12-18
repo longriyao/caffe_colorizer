@@ -25,3 +25,4 @@ snapshot: 500
 snapshot_prefix: "state/gan"
 # solver mode: CPU or GPU
 solver_mode: GPU             
+type:"Adam"

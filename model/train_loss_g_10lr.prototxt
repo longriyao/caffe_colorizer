@@ -657,7 +657,7 @@ layer {
         module: 'gen_image'
         layer: 'GenLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
-        param_str: "{\'output_folder\': \'output/\'}"
+        param_str: "{\'output_folder\': \'output/ano/\'}"
     }
 }
 
