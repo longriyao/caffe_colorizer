@@ -10,22 +10,15 @@ layer {
   top: "label"
   top: "label_g"
   python_param {
-    module: "data_layer"
+    module: "data_layer_bn_no_noise"
     layer: "DataLayer"
-    param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+    param_str: "{\'batch_size\': 1 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
   }
-}
-layer {
-  name: "gray_image_input_data_0_split"
-  type: "Split"
-  bottom: "gray_image"
-  top: "gray_image_input_data_0_split_0"
-  top: "gray_image_input_data_0_split_1"
 }
 layer {
   name: "g_conv_1"
   type: "Convolution"
-  bottom: "gray_image_input_data_0_split_0"
+  bottom: "gray_image"
   top: "g_conv_1"
   param {
     name: "g_conv_1_w"
@@ -41,7 +34,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 16
+    num_output: 32
     pad: 1
     kernel_size: 3
     stride: 1
@@ -68,15 +61,33 @@ layer {
   type: "Scale"
   bottom: "g_conv_1"
   top: "g_conv_1"
+  param {
+    name: "g_scale_1_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_1_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_1"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_1"
   top: "g_conv_1"
+  param {
+    name: "g_relu_1_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
 }
 layer {
   name: "g_conv_2"
@@ -97,7 +108,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 32
+    num_output: 64
     pad: 1
     kernel_size: 3
     stride: 1
@@ -124,32 +135,38 @@ layer {
   type: "Scale"
   bottom: "g_conv_2"
   top: "g_conv_2"
+  param {
+    name: "g_scale_2_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_2_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_2"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_2"
   top: "g_conv_2"
-}
-layer {
-  name: "g_pooling_2"
-  type: "Pooling"
-  bottom: "g_conv_2"
-  top: "g_pooling_2"
-  top: "g_pooling_2_mask"
-  pooling_param {
-    pool: MAX
-    kernel_size: 2
-    stride: 2
+  param {
+    name: "g_relu_2_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
   }
 }
 layer {
   name: "g_conv_3"
   type: "Convolution"
-  bottom: "g_pooling_2"
+  bottom: "g_conv_2"
   top: "g_conv_3"
   param {
     name: "g_conv_3_w"
@@ -165,7 +182,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 64
+    num_output: 128
     pad: 1
     kernel_size: 3
     stride: 1
@@ -192,32 +209,38 @@ layer {
   type: "Scale"
   bottom: "g_conv_3"
   top: "g_conv_3"
+  param {
+    name: "g_scale_3_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_3_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_3"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_3"
   top: "g_conv_3"
-}
-layer {
-  name: "g_pooling_3"
-  type: "Pooling"
-  bottom: "g_conv_3"
-  top: "g_pooling_3"
-  top: "g_pooling_3_mask"
-  pooling_param {
-    pool: MAX
-    kernel_size: 2
-    stride: 2
+  param {
+    name: "g_relu_3_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
   }
 }
 layer {
   name: "g_conv_4"
   type: "Convolution"
-  bottom: "g_pooling_3"
+  bottom: "g_conv_3"
   top: "g_conv_4"
   param {
     name: "g_conv_4_w"
@@ -233,7 +256,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 128
+    num_output: 256
     pad: 1
     kernel_size: 3
     stride: 1
@@ -260,15 +283,33 @@ layer {
   type: "Scale"
   bottom: "g_conv_4"
   top: "g_conv_4"
+  param {
+    name: "g_scale_4_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_4_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_4"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_4"
   top: "g_conv_4"
+  param {
+    name: "g_relu_4_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
 }
 layer {
   name: "g_conv_5"
@@ -289,7 +330,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 64
+    num_output: 512
     pad: 1
     kernel_size: 3
     stride: 1
@@ -316,30 +357,38 @@ layer {
   type: "Scale"
   bottom: "g_conv_5"
   top: "g_conv_5"
+  param {
+    name: "g_scale_5_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_5_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_5"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_5"
   top: "g_conv_5"
-}
-layer {
-  name: "g_upsample_1"
-  type: "Upsample"
-  bottom: "g_conv_5"
-  bottom: "g_pooling_3_mask"
-  top: "g_upsample_1"
-  upsample_param {
-    scale: 2
+  param {
+    name: "g_relu_5_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
   }
 }
 layer {
   name: "g_conv_6"
   type: "Convolution"
-  bottom: "g_upsample_1"
+  bottom: "g_conv_5"
   top: "g_conv_6"
   param {
     name: "g_conv_6_w"
@@ -355,7 +404,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 32
+    num_output: 256
     pad: 1
     kernel_size: 3
     stride: 1
@@ -382,30 +431,38 @@ layer {
   type: "Scale"
   bottom: "g_conv_6"
   top: "g_conv_6"
+  param {
+    name: "g_scale_6_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_6_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_6"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_6"
   top: "g_conv_6"
-}
-layer {
-  name: "g_upsample_2"
-  type: "Upsample"
-  bottom: "g_conv_6"
-  bottom: "g_pooling_2_mask"
-  top: "g_upsample_2"
-  upsample_param {
-    scale: 2
+  param {
+    name: "g_relu_6_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
   }
 }
 layer {
   name: "g_conv_7"
   type: "Convolution"
-  bottom: "g_upsample_2"
+  bottom: "g_conv_6"
   top: "g_conv_7"
   param {
     name: "g_conv_7_w"
@@ -421,7 +478,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 64
+    num_output: 128
     pad: 1
     kernel_size: 3
     stride: 1
@@ -448,30 +505,38 @@ layer {
   type: "Scale"
   bottom: "g_conv_7"
   top: "g_conv_7"
+  param {
+    name: "g_scale_7_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_7_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
   scale_param {
     bias_term: true
   }
 }
 layer {
   name: "g_relu_7"
-  type: "ReLU"
+  type: "PReLU"
   bottom: "g_conv_7"
   top: "g_conv_7"
-}
-layer {
-  name: "concat"
-  type: "Concat"
-  bottom: "gray_image_input_data_0_split_1"
-  bottom: "g_conv_7"
-  top: "concat"
-  concat_param {
-    axis: 1
+  param {
+    name: "g_relu_7_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
   }
 }
 layer {
   name: "g_conv_8"
   type: "Convolution"
-  bottom: "concat"
+  bottom: "g_conv_7"
   top: "g_conv_8"
   param {
     name: "g_conv_8_w"
@@ -487,7 +552,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 32
+    num_output: 64
     pad: 1
     kernel_size: 3
     stride: 1
@@ -501,10 +566,46 @@ layer {
   }
 }
 layer {
-  name: "g_relu_8"
-  type: "ReLU"
+  name: "g_bn_8"
+  type: "BatchNorm"
   bottom: "g_conv_8"
   top: "g_conv_8"
+  batch_norm_param {
+    use_global_stats: false
+  }
+}
+layer {
+  name: "g_scale_8"
+  type: "Scale"
+  bottom: "g_conv_8"
+  top: "g_conv_8"
+  param {
+    name: "g_scale_8_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_8_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "g_relu_8"
+  type: "PReLU"
+  bottom: "g_conv_8"
+  top: "g_conv_8"
+  param {
+    name: "g_relu_8_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
 }
 layer {
   name: "g_conv_9"
@@ -525,6 +626,80 @@ layer {
   }
   propagate_down: false
   convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "g_bn_9"
+  type: "BatchNorm"
+  bottom: "g_conv_9"
+  top: "g_conv_9"
+  batch_norm_param {
+    use_global_stats: false
+  }
+}
+layer {
+  name: "g_scale_9"
+  type: "Scale"
+  bottom: "g_conv_9"
+  top: "g_conv_9"
+  param {
+    name: "g_scale_9_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_9_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "g_sigmoid_9"
+  type: "PReLU"
+  bottom: "g_conv_9"
+  top: "g_conv_9"
+  param {
+    name: "g_relu_9_p"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+}
+layer {
+  name: "g_conv_10"
+  type: "Convolution"
+  bottom: "g_conv_9"
+  top: "g_conv_10"
+  param {
+    name: "g_conv_10_w"
+    lr_mult: 1
+    decay_mult: 1
+    param_propagate_down: false
+  }
+  param {
+    name: "g_conv_10_b"
+    lr_mult: 2
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  propagate_down: false
+  convolution_param {
     num_output: 3
     pad: 1
     kernel_size: 3
@@ -539,9 +714,45 @@ layer {
   }
 }
 layer {
+  name: "g_bn_10"
+  type: "BatchNorm"
+  bottom: "g_conv_10"
+  top: "g_conv_10"
+  batch_norm_param {
+    use_global_stats: false
+  }
+}
+layer {
+  name: "g_scale_10"
+  type: "Scale"
+  bottom: "g_conv_10"
+  top: "g_conv_10"
+  param {
+    name: "g_scale_10_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_10_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "g_Tanh_10"
+  type: "TanH"
+  bottom: "g_conv_10"
+  top: "g_conv_10"
+}
+layer {
   name: "output"
   type: "Python"
-  bottom: "g_conv_9"
+  bottom: "g_conv_10"
   bottom: "color_image"
   bottom: "label"
   bottom: "label_g"

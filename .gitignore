@@ -53,3 +53,4 @@ out_unaug_64x64/
 out_unaug_64x64*
 output*
 state
+*pyc
