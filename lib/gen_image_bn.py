@@ -26,16 +26,24 @@ class GenLayer(caffe.Layer):
         if(bottom[0] is None):
             print "this is no images"
             return 0
+        
         channel_swap = (0, 2, 3, 1)
         images = np.array(bottom[0].data)
+        color_images = np.array(bottom[0].data)
         images = images.transpose(channel_swap)
+        color_images = color_images.transpose(channel_swap)
         # get the origin image
         images *= 177
         images += 177
+        color_images *= 177
+        color_images += 177
+        tmp_images = np.zeros(images[0].shape[0],images[0].shpae[1]*2,images[0].shpae[2])
         # record the file num
         for i in xrange(len(images)):
             name = os.path.join(self._output_folder,str(self._i)+".jpg")
-            cv2.imwrite(name,images[i])
+            tmp_images[:,0:images[i].shape[1],:] = images[i]
+            tmp_images[:,images[i].shape[1]:,:] = color_images[i]
+            cv2.imwrite(name,tmp_images)
             self._i = self._i + 1
         top[0].reshape(1)
         print "------------ forward is done"
