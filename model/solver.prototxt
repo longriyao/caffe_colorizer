@@ -6,7 +6,7 @@ net: "model/train_loss_g.prototxt"
 # Carry out testing every 500 training iterations.
 # The base learning rate, momentum and the weight decay of the network.
 test_iter: 1
-test_interval: 100
+test_interval: 500
 base_lr: 0.0001
 momentum: 0.9
 weight_decay: 0.0005
