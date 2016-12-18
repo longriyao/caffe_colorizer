@@ -28,8 +28,8 @@ class GenLayer(caffe.Layer):
             return 0
         
         channel_swap = (0, 2, 3, 1)
-        images = np.array(bottom[1].data)
-        color_images = np.array(bottom[0].data)
+        images = np.array(bottom[0].data)
+        color_images = np.array(bottom[1].data)
         images = images.transpose(channel_swap)
         color_images = color_images.transpose(channel_swap)
         # get the origin image

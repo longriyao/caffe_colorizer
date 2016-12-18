@@ -28,11 +28,20 @@ class GenLayer(caffe.Layer):
             return 0
         channel_swap = (0, 2, 3, 1)
         images = np.array(bottom[0].data)
+        color_images = np.array(bottom[1].data)
+        
         images = images.transpose(channel_swap)
+        color_images = color_images.transpose(channel_swap)
+
+        tmp_images = np.zeros((images[0].shape[0],images[0].shape[1]*2,images[0].shape[2]))
+        
         # record the file num
         for i in xrange(len(images)):
             name = os.path.join(self._output_folder,str(self._i)+".jpg")
-            cv2.imwrite(name,images[i])
+            tmp_images[:,0:images[i].shape[1],:] = color_images[i]
+            tmp_images[:,images[i].shape[1]:,:] = images[i]
+            
+            cv2.imwrite(name,tmp_images)
             self._i = self._i + 1
         top[0].reshape(1)
         print "------------ forward is done"

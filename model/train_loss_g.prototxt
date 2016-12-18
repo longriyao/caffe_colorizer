@@ -79,6 +79,19 @@ layer {
 	top: "g_conv_1"
 	name: "g_scale_1"
 	type: "Scale"
+    param {
+        name: "g_scale_1_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_1_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+
 	scale_param {
 		bias_term: true
 	}
@@ -139,6 +152,18 @@ layer {
 	top: "g_conv_2"
 	name: "g_scale_2"
 	type: "Scale"
+    param {
+        name: "g_scale_2_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_2_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -212,6 +237,18 @@ layer {
 	top: "g_conv_3"
 	name: "g_scale_3"
 	type: "Scale"
+    param {
+        name: "g_scale_3_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_3_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -285,6 +322,18 @@ layer {
 	top: "g_conv_4"
 	name: "g_scale_4"
 	type: "Scale"
+    param {
+        name: "g_scale_4_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_4_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -345,6 +394,18 @@ layer {
 	top: "g_conv_5"
 	name: "g_scale_5"
 	type: "Scale"
+    param {
+        name: "g_scale_5_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_5_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -436,6 +497,18 @@ layer {
 	top: "g_conv_6"
 	name: "g_scale_6"
 	type: "Scale"
+    param {
+        name: "g_scale_6_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_6_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -526,6 +599,18 @@ layer {
 	top: "g_conv_7"
 	name: "g_scale_7"
 	type: "Scale"
+    param {
+        name: "g_scale_7_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_7_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -597,6 +682,18 @@ layer {
 	#top: "g_conv_8"
 	#name: "g_scale_8"
 	#type: "Scale"
+    #param {
+        #name: "g_scale_8_w"
+        #lr_mult: 1
+        #decay_mult: 0
+        #param_propagate_down: 0
+    #}
+    #param {
+        #name: "g_scale_8_b"
+        #lr_mult: 1
+        #decay_mult: 0
+        #param_propagate_down: 0
+    #}
 	#scale_param {
 		#bias_term: true
 	#}
@@ -679,6 +776,18 @@ layer {
 	top: "g_conv_9"
 	name: "g_scale_9"
 	type: "Scale"
+    param {
+        name: "g_scale_9_w"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
+    param {
+        name: "g_scale_9_b"
+        lr_mult: 1
+        decay_mult: 0
+        param_propagate_down: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -941,7 +1050,7 @@ layer {
 }
 layer {
     name: "d_prelu_4"
-    type: "PReLU"
+    type: "ReLU"
     bottom: "d_fc_4"
     top: "d_fc_4"
 	include {
@@ -1059,6 +1168,17 @@ layer {
 	top: "g_conv_1_g"
 	name: "g_scale_1_g"
 	type: "Scale"
+    param {
+        name: "g_scale_1_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_1_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
+
 	scale_param {
 		bias_term: true
 	}
@@ -1128,6 +1248,16 @@ layer {
 	top: "g_conv_2_g"
 	name: "g_scale_2_g"
 	type: "Scale"
+    param {
+        name: "g_scale_2_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_2_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1213,6 +1343,16 @@ layer {
 	top: "g_conv_3_g"
 	name: "g_scale_3_g"
 	type: "Scale"
+    param {
+        name: "g_scale_3_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_3_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1298,6 +1438,16 @@ layer {
 	top: "g_conv_4_g"
 	name: "g_scale_4_g"
 	type: "Scale"
+    param {
+        name: "g_scale_4_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_4_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1367,6 +1517,16 @@ layer {
 	top: "g_conv_5_g"
 	name: "g_scale_5_g"
 	type: "Scale"
+    param {
+        name: "g_scale_5_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_5_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1470,6 +1630,16 @@ layer {
 	top: "g_conv_6_g"
 	name: "g_scale_6_g"
 	type: "Scale"
+    param {
+        name: "g_scale_6_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_6_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1572,6 +1742,16 @@ layer {
 	top: "g_conv_7_g"
 	name: "g_scale_7_g"
 	type: "Scale"
+    param {
+        name: "g_scale_7_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_7_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1655,6 +1835,16 @@ layer {
 	#top: "g_conv_8_g"
 	#name: "g_scale_8_g"
 	#type: "Scale"
+    #param {
+        #name: "g_scale_8_w"
+        #lr_mult: 1
+        #decay_mult: 0
+    #}
+    #param {
+        #name: "g_scale_8_b"
+        #lr_mult: 1
+        #decay_mult: 0
+    #}
 	#include {
       #phase: TRAIN
     #}
@@ -1724,6 +1914,16 @@ layer {
 	top: "g_conv_9_g"
 	name: "g_scale_9_g"
 	type: "Scale"
+    param {
+        name: "g_scale_9_w"
+        lr_mult: 1
+        decay_mult: 0
+    }
+    param {
+        name: "g_scale_9_b"
+        lr_mult: 1
+        decay_mult: 0
+    }
 	scale_param {
 		bias_term: true
 	}
@@ -1994,7 +2194,7 @@ layer {
 }
 layer {
     name: "d_prelu_4_g"
-    type: "PReLU"
+    type: "ReLU"
     bottom: "d_fc_4_g"
     top: "d_fc_4_g"
 	include {
