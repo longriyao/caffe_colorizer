@@ -1587,6 +1587,9 @@ layer {
     bottom: "gray_image"
     bottom: "g_conv_5_g"
     top: "concat_0_1"
+    include {
+      phase: TRAIN
+    }
     concat_param{
         axis : 1
     }

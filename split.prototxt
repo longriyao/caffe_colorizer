@@ -16,9 +16,16 @@ layer {
   }
 }
 layer {
+  name: "gray_image_input_data_0_split"
+  type: "Split"
+  bottom: "gray_image"
+  top: "gray_image_input_data_0_split_0"
+  top: "gray_image_input_data_0_split_1"
+}
+layer {
   name: "g_conv_1"
   type: "Convolution"
-  bottom: "gray_image"
+  bottom: "gray_image_input_data_0_split_0"
   top: "g_conv_1"
   param {
     name: "g_conv_1_w"
@@ -386,9 +393,19 @@ layer {
   }
 }
 layer {
+  name: "concat_0_0"
+  type: "Concat"
+  bottom: "gray_image_input_data_0_split_1"
+  bottom: "g_conv_5"
+  top: "concat_0_0"
+  concat_param {
+    axis: 1
+  }
+}
+layer {
   name: "g_conv_6"
   type: "Convolution"
-  bottom: "g_conv_5"
+  bottom: "concat_0_0"
   top: "g_conv_6"
   param {
     name: "g_conv_6_w"

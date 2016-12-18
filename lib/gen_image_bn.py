@@ -28,7 +28,7 @@ class GenLayer(caffe.Layer):
             return 0
         
         channel_swap = (0, 2, 3, 1)
-        images = np.array(bottom[0].data)
+        images = np.array(bottom[1].data)
         color_images = np.array(bottom[0].data)
         images = images.transpose(channel_swap)
         color_images = color_images.transpose(channel_swap)
@@ -37,7 +37,7 @@ class GenLayer(caffe.Layer):
         images += 177
         color_images *= 177
         color_images += 177
-        tmp_images = np.zeros(images[0].shape[0],images[0].shpae[1]*2,images[0].shpae[2])
+        tmp_images = np.zeros((images[0].shape[0],images[0].shape[1]*2,images[0].shape[2]))
         # record the file num
         for i in xrange(len(images)):
             name = os.path.join(self._output_folder,str(self._i)+".jpg")
