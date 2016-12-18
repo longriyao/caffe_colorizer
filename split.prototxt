@@ -12,7 +12,7 @@ layer {
   python_param {
     module: "data_layer_bn_no_noise"
     layer: "DataLayer"
-    param_str: "{\'batch_size\': 1 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+    param_str: "{\'batch_size\': 16 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
   }
 }
 layer {
@@ -761,7 +761,7 @@ layer {
     phase: TEST
   }
   python_param {
-    module: "gen_image"
+    module: "gen_image_bn"
     layer: "GenLayer"
     param_str: "{\'output_folder\': \'output/\'}"
   }
