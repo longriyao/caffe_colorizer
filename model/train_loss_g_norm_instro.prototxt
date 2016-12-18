@@ -1,0 +1,21 @@
+name: "GAN"
+layer {
+    name: 'input_data'
+    type: 'Python'
+    top: 'gray_image'
+    top: 'color_image'
+    top: 'label'
+    top: 'label_g'
+    python_param {
+        module: 'data_layer_bn_no_noise'
+        layer: 'DataLayer'
+        #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
+        param_str: "{\'batch_size\': 64 , \'root_folder\': \'out_unaug_64x64/\', \'source\': \'train.txt\'}"
+    }
+}
+
+tanh as generate 
+use prelu
+pool use ave
+Noisy Labels: real:0.7 1.2  fake:0.0 0.3
+ ADAM Optimizer
