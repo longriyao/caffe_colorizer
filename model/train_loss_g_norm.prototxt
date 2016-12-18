@@ -807,7 +807,7 @@ layer {
       phase: TEST
     }
     python_param {
-        module: 'gen_image'
+        module: 'gen_image_bn'
         layer: 'GenLayer'
         #param_str: " 'batch_size': 32 " #and roor_folder folder and train.txt source height weight
         param_str: "{\'output_folder\': \'output/\'}"
