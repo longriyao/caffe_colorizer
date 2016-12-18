@@ -364,6 +364,7 @@ layer {
     }
 }
 
+
 layer {
 	bottom: "g_conv_5"
 	top: "g_conv_5"
@@ -410,9 +411,21 @@ layer {
 }
 
 layer {
+    name: "concat_0_0"
+    type: "Concat"
+    bottom: "gray_image"
+    bottom: "g_conv_5"
+    top: "concat_0_0"
+    concat_param{
+        axis : 1
+    }
+}
+
+
+layer {
     name: "g_conv_6"
     type: "Convolution"
-    bottom: "g_conv_5"
+    bottom: "concat_0_0"
     top: "g_conv_6"
     propagate_down: 0
     param {
@@ -1516,6 +1529,7 @@ layer {
     }
 }
 
+
 layer {
 	bottom: "g_conv_5_g"
 	top: "g_conv_5_g"
@@ -1568,9 +1582,20 @@ layer {
 }
 
 layer {
+    name: "concat_0_1"
+    type: "Concat"
+    bottom: "gray_image"
+    bottom: "g_conv_5_g"
+    top: "concat_0_1"
+    concat_param{
+        axis : 1
+    }
+}
+
+layer {
     name: "g_conv_6_g"
     type: "Convolution"
-    bottom: "g_conv_5_g"
+    bottom: "concat_0_1"
     top: "g_conv_6_g"
     param {
         name: "g_conv_6_w"
