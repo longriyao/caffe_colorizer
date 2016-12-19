@@ -48,10 +48,10 @@ class DataLayer(caffe.Layer):
         gray_image = gray_image.transpose(channel_swap)
 
         #normalize the input 
-        color_image -= 177.0;
-        color_image /= 177.0;
-        gray_image -= 177.0;
-        gray_image /= 177.0;
+        color_image -= 177.0
+        color_image /= 177.0
+        gray_image -= 177.0
+        gray_image /= 177.0
         
         # generate noise
         #noise = np.random.uniform(0.0,1.0, gray_image.shape)

@@ -49,12 +49,17 @@ class DataLayer(caffe.Layer):
         color_image = color_image.transpose(channel_swap)
         gray_image = gray_image.transpose(channel_swap)
 
+        #normalize the input
+        color_image /= 255.0
+        gray_image /= 255.0
+
         # generate noise
         #noise = np.random.uniform(0.0,1.0, gray_image.shape)
         #gray_image = gray_image + noise
 
         blobs['gray_image'] = gray_image
         blobs['color_image'] = color_image
+
         if self._has_label:
             label = np.zeros((len(batch_paths) * 2,1), dtype=np.int)
             label[:(len(batch_paths) - 1)] = 1

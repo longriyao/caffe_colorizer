@@ -33,6 +33,10 @@ class GenLayer(caffe.Layer):
         images = images.transpose(channel_swap)
         color_images = color_images.transpose(channel_swap)
 
+        # get the origin image
+        images *= 255.0
+        color_images *= 255.0
+
         tmp_images = np.zeros((images[0].shape[0],images[0].shape[1]*2,images[0].shape[2]))
         
         # record the file num
