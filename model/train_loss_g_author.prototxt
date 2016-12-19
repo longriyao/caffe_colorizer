@@ -1980,7 +1980,7 @@ layer {
 
 layer {
     name: "g_sigmoid_9_g"
-    type: "ReLU"
+    type: "Sigmoid"
     bottom: "g_conv_9_g"
     top: "g_conv_9_g"
 	include {

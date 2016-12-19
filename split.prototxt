@@ -335,7 +335,7 @@ layer {
   }
   propagate_down: false
   convolution_param {
-    num_output: 64
+    num_output: 256
     pad: 1
     kernel_size: 3
     stride: 1
@@ -388,44 +388,25 @@ layer {
   name: "g_deconv_1"
   type: "Deconvolution"
   bottom: "g_conv_5"
-  top: "g_deconv_1"
+  top: "g_conv_6"
   param {
     name: "g_deconv_1_w"
     lr_mult: 1
     decay_mult: 1
     param_propagate_down: false
   }
-  convolution_param {
-    num_output: 64
-    bias_term: false
-    pad: 0
-    kernel_size: 2
-    stride: 2
-  }
-}
-layer {
-  name: "g_conv_6"
-  type: "Convolution"
-  bottom: "g_deconv_1"
-  top: "g_conv_6"
   param {
-    name: "g_conv_6_w"
-    lr_mult: 1
-    decay_mult: 1
-    param_propagate_down: false
-  }
-  param {
-    name: "g_conv_6_b"
+    name: "g_deconv_1_b"
     lr_mult: 2
     decay_mult: 0
     param_propagate_down: false
   }
-  propagate_down: false
   convolution_param {
-    num_output: 32
-    pad: 1
-    kernel_size: 3
-    stride: 1
+    num_output: 128
+    bias_term: true
+    pad: 0
+    kernel_size: 2
+    stride: 2
     weight_filler {
       type: "xavier"
     }
@@ -475,44 +456,25 @@ layer {
   name: "g_deconv_2"
   type: "Deconvolution"
   bottom: "g_conv_6"
-  top: "g_deconv_2"
+  top: "g_conv_7"
   param {
     name: "g_deconv_2_w"
     lr_mult: 1
     decay_mult: 1
     param_propagate_down: false
   }
-  convolution_param {
-    num_output: 64
-    bias_term: false
-    pad: 0
-    kernel_size: 2
-    stride: 2
-  }
-}
-layer {
-  name: "g_conv_7"
-  type: "Convolution"
-  bottom: "g_deconv_2"
-  top: "g_conv_7"
   param {
-    name: "g_conv_7_w"
-    lr_mult: 1
-    decay_mult: 1
-    param_propagate_down: false
-  }
-  param {
-    name: "g_conv_7_b"
+    name: "g_deconv_2_b"
     lr_mult: 2
     decay_mult: 0
     param_propagate_down: false
   }
-  propagate_down: false
   convolution_param {
     num_output: 64
-    pad: 1
-    kernel_size: 3
-    stride: 1
+    bias_term: true
+    pad: 0
+    kernel_size: 2
+    stride: 2
     weight_filler {
       type: "xavier"
     }
@@ -601,6 +563,36 @@ layer {
   }
 }
 layer {
+  name: "g_bn_8"
+  type: "BatchNorm"
+  bottom: "g_conv_8"
+  top: "g_conv_8"
+  batch_norm_param {
+    use_global_stats: false
+  }
+}
+layer {
+  name: "g_scale_8"
+  type: "Scale"
+  bottom: "g_conv_8"
+  top: "g_conv_8"
+  param {
+    name: "g_scale_8_w"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  param {
+    name: "g_scale_8_b"
+    lr_mult: 1
+    decay_mult: 0
+    param_propagate_down: false
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
   name: "g_relu_8"
   type: "ReLU"
   bottom: "g_conv_8"
@@ -637,6 +629,12 @@ layer {
       value: 0
     }
   }
+}
+layer {
+  name: "g_sigmoid_9"
+  type: "Sigmoid"
+  bottom: "g_conv_9"
+  top: "g_conv_9"
 }
 layer {
   name: "output"
