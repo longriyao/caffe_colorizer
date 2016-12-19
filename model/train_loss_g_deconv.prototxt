@@ -422,16 +422,17 @@ layer {
   bottom: "g_conv_5"
   top: "g_deconv_1"
   param {
+    name: "g_deconv_1_w"
     lr_mult: 1
     decay_mult: 1
     param_propagate_down: 0
   }
   convolution_param {
-    num_output: 32
+    num_output: 64
     bias_term: false
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
-    pad: 2
+    pad: 0
   }
 }
 
@@ -526,16 +527,17 @@ layer {
   bottom: "g_conv_6"
   top: "g_deconv_2"
   param {
+    name: "g_deconv_2_w"
     lr_mult: 1
     decay_mult: 1
     param_propagate_down: 0
   }
   convolution_param {
-    num_output: 32
+    num_output: 64
     bias_term: false
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
-    pad: 2
+    pad: 0
   }
 }
 
@@ -1556,16 +1558,20 @@ layer {
   bottom: "g_conv_5_g"
   top: "g_deconv_1_g"
   param {
+    name: "g_deconv_1_w"
     lr_mult: 1
     decay_mult: 1
-    param_propagate_down: 0
   }
+  include {
+    phase: TRAIN
+  }
+
   convolution_param {
-    num_output: 32
+    num_output: 64
     bias_term: false
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
-    pad: 2
+    pad: 0
   }
 }
 
@@ -1670,16 +1676,19 @@ layer {
   bottom: "g_conv_6_g"
   top: "g_deconv_2_g"
   param {
+    name: "g_deconv_2_w"
     lr_mult: 1
     decay_mult: 1
-    param_propagate_down: 0
+  }
+  include {
+    phase: TRAIN
   }
   convolution_param {
-    num_output: 32
+    num_output: 64
     bias_term: false
-    kernel_size: 3
+    kernel_size: 2
     stride: 2
-    pad: 2
+    pad: 0
   }
 }
 
